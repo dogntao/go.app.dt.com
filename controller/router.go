@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 )
 
 type Controller struct {
@@ -20,12 +21,14 @@ func Base(w http.ResponseWriter, r *http.Request) {
 	if do == "" {
 		do = "Index"
 	}
-	do
+	do = strings.Title(do)
 	fmt.Fprintf(w, "%s \r\n", do)
 
+	//调用do方法
 	controlelr := &Controller{}
 	conVal := reflect.ValueOf(controlelr)
-	//	method := conVal.MethodByName("")
-	controlelr.Test()
-	fmt.Fprintf(w, "%s,\r\n", conVal)
+	method := conVal.MethodByName(do)
+	method.Call([]reflect.Value{})
+
+	fmt.Fprintf(w, "%v,\r\n", method)
 }
