@@ -18,9 +18,9 @@ func Base(w http.ResponseWriter, r *http.Request) {
 
 	//获取do
 	do := r.FormValue("do")
-	if do == "" {
-		do = "Index"
-	}
+	//	if do == "" {
+	//		do = "Index"
+	//	}
 	do = strings.Title(do)
 	fmt.Fprintf(w, "%s \r\n", do)
 
@@ -28,7 +28,9 @@ func Base(w http.ResponseWriter, r *http.Request) {
 	controlelr := &Controller{}
 	conVal := reflect.ValueOf(controlelr)
 	method := conVal.MethodByName(do)
-	method.Call([]reflect.Value{})
+	if method.IsValid() {
+		method.Call([]reflect.Value{})
+	}
 
-	fmt.Fprintf(w, "%v,\r\n", method)
+	//	fmt.Fprintf(w, "%v,\r\n", method)
 }
