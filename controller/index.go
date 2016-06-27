@@ -5,6 +5,10 @@ import (
 )
 
 func (c *Controller) Test() {
+	c.req.ParseForm()
+	for k, v := range c.req.Form {
+		fmt.Printf("%s,%s \r\n", k, v[0])
+	}
 	fmt.Println("test controller")
 }
 

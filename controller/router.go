@@ -8,6 +8,7 @@ import (
 )
 
 type Controller struct {
+	req *http.Request
 }
 
 func Base(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +27,7 @@ func Base(w http.ResponseWriter, r *http.Request) {
 
 	//调用do方法
 	controlelr := &Controller{}
+	controlelr.req = r
 	conVal := reflect.ValueOf(controlelr)
 	method := conVal.MethodByName(do)
 	if method.IsValid() {
