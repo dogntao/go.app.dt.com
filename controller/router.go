@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	//	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
@@ -9,6 +9,7 @@ import (
 
 type Controller struct {
 	req *http.Request
+	rep http.ResponseWriter
 }
 
 func Base(w http.ResponseWriter, r *http.Request) {
@@ -19,20 +20,16 @@ func Base(w http.ResponseWriter, r *http.Request) {
 
 	//获取do
 	do := r.FormValue("do")
-	//	if do == "" {
-	//		do = "Index"
-	//	}
 	do = strings.Title(do)
-	fmt.Fprintf(w, "%s \r\n", do)
+	//	fmt.Fprintf(w, "%s \r\n", do)
 
 	//调用do方法
 	controlelr := &Controller{}
 	controlelr.req = r
+	controlelr.rep = w
 	conVal := reflect.ValueOf(controlelr)
 	method := conVal.MethodByName(do)
 	if method.IsValid() {
 		method.Call([]reflect.Value{})
 	}
-
-	//	fmt.Fprintf(w, "%v,\r\n", method)
 }
