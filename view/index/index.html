@@ -7,10 +7,20 @@
         <script type="text/javascript" src="/js/jquery.js" ></script>
     </head>
     <body>
-        <div class="head">
-            <div class="head_left"><h1>管理后台</h1></div>
-            {{.Name}}
+        <div>123</div>
+        <div >
+		<table>
+            {{range .}}
+			<tr>
+			<td>name:{{.Name}}</td>
+			</tr>
+			<tr>
+			{{range .Hobby}}
+			<td>{{.}}</td>
+			{{end}}
+			</tr>
+            {{end}}
+			</table>
         </div>
-        <div>欢迎登陆管理后台首页</div>
     </body>
 </html>

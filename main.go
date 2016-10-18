@@ -9,8 +9,17 @@ import (
 	//	"strings"
 )
 
+type DtHandler struct {
+	port string
+}
+
+func (dt *DtHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	con.Base(w, r)
+	return
+}
+
 func main() {
 	fmt.Println("start server")
-	http.HandleFunc("/", con.Base)
-	http.ListenAndServe(":8888", nil)
+	dtHandler := &DtHandler{port: ":8888"}
+	http.ListenAndServe(dtHandler.port, dtHandler)
 }
