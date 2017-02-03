@@ -3,10 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	//	"net/url"
 
-	con "go.app.dt.com/controller"
-	//	"strings"
+	con "go.app.dt.com/app/controller"
 )
 
 type DtHandler struct {
