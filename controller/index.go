@@ -11,10 +11,10 @@ type User struct {
 }
 
 func (c *Controller) Test() {
-	//	c.req.ParseForm()
-	//	for k, v := range c.req.Form {
-	//		fmt.Printf("%s,%s \r\n", k, v[0])
-	//	}
+	c.req.ParseForm()
+	for k, v := range c.req.Form {
+		fmt.Printf("%s,%s \r\n", k, v[0])
+	}
 	Users := make([]User, 3)
 	Users[0].Name = "dongtao"
 	Users[0].Hobby[0] = "swimming"
@@ -23,11 +23,11 @@ func (c *Controller) Test() {
 	Users[1].Hobby[0] = "football"
 	Users[1].Hobby[1] = "pingpang"
 
-	t, err := template.ParseFiles("view/index/index.html")
+	t, err := template.ParseFiles("view/layouts/header.html","view/index/index.html","view/layouts/footer.html")
+	t.ExecuteTemplate(c.rep,"index",Users)
 	if err != nil {
 		fmt.Println(err)
 	}
-	t.Execute(c.rep, Users)
 }
 
 func (c *Controller) Index() {
