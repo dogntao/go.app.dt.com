@@ -4,16 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	con "go.app.dt.com/app/controller"
+	con "go.app.dt.com/app/controllers"
 )
 
 type DtHandler struct {
 	port string
-}
-
-func (dt *DtHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	con.Base(w, r)
-	return
+	con.BaseController
 }
 
 func main() {
