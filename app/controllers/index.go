@@ -1,8 +1,9 @@
-package controller
+package controllers
 
 import (
 	"fmt"
-	"text/template"
+	"html/template"
+	"net/http"
 )
 
 type User struct {
@@ -10,11 +11,17 @@ type User struct {
 	Hobby [3]string
 }
 
-func (c *BaseController) Test() {
+type IndexController struct {
+	req *http.Request
+	rep http.ResponseWriter
+	BaseController
+}
+
+func (c *IndexController) Test() {
 	c.req.ParseForm()
-	// for k, v := range c.req.Form {
-	// 	fmt.Printf("%s,%s \r\n", k, v[0])
-	// }
+	for k, v := range c.req.Form {
+		fmt.Printf("%s,%s \r\n", k, v[0])
+	}
 	Users := make([]User, 3)
 	Users[0].Name = "dongtao"
 	Users[0].Hobby[0] = "swimming"
@@ -30,6 +37,7 @@ func (c *BaseController) Test() {
 	}
 }
 
-func (c *BaseController) Index() {
-	fmt.Println("index controller")
+func (c *IndexController) Index() {
+	c.Display()
+	// fmt.Println("index controller")
 }
