@@ -9,7 +9,7 @@ import (
 
 type DtHandler struct {
 	port string
-	con.BaseController
+	con.Router
 }
 
 func main() {

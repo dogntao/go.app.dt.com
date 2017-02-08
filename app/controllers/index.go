@@ -38,7 +38,7 @@ func (c *IndexController) Test() {
 func (c *IndexController) Index() {
 	// c.Display()
 	for key, value := range strings.Split(req.RequestURI, "/") {
-		fmt.Println(key, value)
+		fmt.Fprintln(rep, key, value)
 	}
 
 }
