@@ -1,8 +1,6 @@
-{{define "index"}} 
-{{template "header"}}
-<div>123</div>
+{{define "index"}} {{template "header"}}
 <div>
-    <table>
+    <!--<table>
         {{range .}}
         <tr>
             <td>name:{{.Name}}</td>
@@ -13,7 +11,21 @@
             {{end}}
         </tr>
         {{end}}
-    </table>
+    </table>-->
+
+    <div id="app">
+        {{123}}
+    </div>
 </div>
-{{template "footer"}} 
-{{end}}
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        }
+    })
+
+</script>
+
+{{template "footer"}} {{end}}

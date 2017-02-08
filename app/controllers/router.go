@@ -26,7 +26,7 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	rep = w
 
 	con := "Index"
-	ac := "Index"
+	ac := "Test"
 	conVal := reflect.ValueOf(funs[con])
 	method := conVal.MethodByName(ac)
 	if method.IsValid() {
