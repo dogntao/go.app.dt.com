@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"html/template"
-	"net/http"
+	"strings"
 )
 
 type User struct {
@@ -12,14 +12,12 @@ type User struct {
 }
 
 type IndexController struct {
-	req *http.Request
-	rep http.ResponseWriter
 	BaseController
 }
 
 func (c *IndexController) Test() {
-	c.req.ParseForm()
-	for k, v := range c.req.Form {
+	req.ParseForm()
+	for k, v := range req.Form {
 		fmt.Printf("%s,%s \r\n", k, v[0])
 	}
 	Users := make([]User, 3)
@@ -31,13 +29,16 @@ func (c *IndexController) Test() {
 	Users[1].Hobby[1] = "pingpang"
 
 	t, err := template.ParseFiles("view/layouts/header.html", "view/index/index.html", "view/layouts/footer.html")
-	t.ExecuteTemplate(c.rep, "index", Users)
+	t.ExecuteTemplate(rep, "index", Users)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
 func (c *IndexController) Index() {
-	c.Display()
-	// fmt.Println("index controller")
+	// c.Display()
+	for key, value := range strings.Split(req.RequestURI, "/") {
+		fmt.Println(key, value)
+	}
+
 }

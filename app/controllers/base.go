@@ -6,23 +6,28 @@ import (
 	"reflect"
 )
 
-type BaseController struct {
-	// req *http.Request
-	// rep http.ResponseWriter
+// 保存输入和输出
+var (
+	req *http.Request
+	rep http.ResponseWriter
+)
+
+// 注册路由
+var funs = map[string]interface{}{
+	"Index": &IndexController{},
 }
 
-// 路由(/Index/index)
+//
+type BaseController struct {
+}
+
+// 路由转发(/Index/index)
 func (ba *BaseController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Base(w, r)
-	// 解析路径
-	// fmt.Fprintf(w, "%s \r\n", r.URL.Path)
-	var funs = map[string]interface{}{
-		"Index": &IndexController{req: r, rep: w},
-	}
+	req = r
+	rep = w
 
 	con := "Index"
-	ac := "Test"
-
+	ac := "Index"
 	conVal := reflect.ValueOf(funs[con])
 	method := conVal.MethodByName(ac)
 	if method.IsValid() {
