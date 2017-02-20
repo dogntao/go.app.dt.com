@@ -14,18 +14,33 @@
     </table>-->
 
     <div id="app">
-        {{123}}
+        <ol>
+            <todo-item v-for="item in dataList" v-bind:todo="item"></todo-item>
+        </ol>
     </div>
 </div>
 
 <script>
-    var app = new Vue({
+    require(['jquery', 'vue'], function($, Vue) {})
+        // Vue.component('todo-item',{
+        //     delimiters: ['${', '}'],
+        //     props:['todo'],
+        //     template:"<li>${todo.text}</li>"
+        // })
+
+    var app7 = new Vue({
+        delimiters: ['${', '}'],
         el: '#app',
         data: {
-            message: 'Hello Vue!'
+            dataList: [{
+                text: 'china'
+            }, {
+                text: 'america'
+            }, {
+                text: 'england'
+            }]
         }
     })
-
 </script>
 
 {{template "footer"}} {{end}}
