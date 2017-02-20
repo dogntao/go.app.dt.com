@@ -21,25 +21,26 @@
 </div>
 
 <script>
-    require(['jquery', 'vue'], function($, Vue) {})
-        // Vue.component('todo-item',{
-        //     delimiters: ['${', '}'],
-        //     props:['todo'],
-        //     template:"<li>${todo.text}</li>"
-        // })
+    require(['jquery', 'vue'], function($, Vue) {
+        Vue.component('todo-item', {
+            delimiters: ['${', '}'],
+            props: ['todo'],
+            template: "<li>${todo.text}</li>"
+        })
 
-    var app7 = new Vue({
-        delimiters: ['${', '}'],
-        el: '#app',
-        data: {
-            dataList: [{
-                text: 'china'
-            }, {
-                text: 'america'
-            }, {
-                text: 'england'
-            }]
-        }
+        var app7 = new Vue({
+            delimiters: ['${', '}'],
+            el: '#app',
+            data: {
+                dataList: [{
+                    text: 'china'
+                }, {
+                    text: 'america'
+                }, {
+                    text: 'england'
+                }]
+            }
+        })
     })
 </script>
 
