@@ -1,47 +1,56 @@
 {{define "index"}} {{template "header"}}
-<div>
-    <!--<table>
-        {{range .}}
-        <tr>
-            <td>name:{{.Name}}</td>
-        </tr>
-        <tr>
-            {{range .Hobby}}
-            <td>{{.}}</td>
-            {{end}}
-        </tr>
-        {{end}}
-    </table>-->
-
-    <div id="app">
-        <ol>
-            <todo-item v-for="item in dataList" v-bind:todo="item"></todo-item>
-        </ol>
-    </div>
+<div id="app">
+    <form action="" class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                姓名
+            </label>
+            <div class="layui-input-inline">
+                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入姓名" required type="text"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                密码
+            </label>
+            <div class="layui-input-inline">
+                <input class="layui-input" required name="password" placeholder="请输入密码" type="password"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <button class="layui-btn" lay-filter="demo1" lay-submit="">
+                    登录
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
-
 <script>
-    require(['jquery', 'vue'], function($, Vue) {
-        Vue.component('todo-item', {
-            delimiters: ['${', '}'],
-            props: ['todo'],
-            template: "<li>${todo.text}</li>"
-        })
+    require(['jquery', 'vue1','layui'], function($, Vue) {
+        layui.use(['form'],function(){
+            var form = layui.form()
+            ,layer = layui.layer;
 
-        var app7 = new Vue({
-            delimiters: ['${', '}'],
+            //监听提交
+            form.on('submit(demo1)', function(data){
+                // consle.log(data);
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
+            })
+            return false;
+          });
+
+        new Vue({
             el: '#app',
-            data: {
-                dataList: [{
-                    text: 'china'
-                }, {
-                    text: 'america'
-                }, {
-                    text: 'england'
-                }]
+            delimiters: ['${','}'],
+            data:{
+                message:'',
+            },
+            methods:{
             }
         })
     })
 </script>
-
 {{template "footer"}} {{end}}

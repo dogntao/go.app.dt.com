@@ -1,0 +1,47 @@
+{{define "index"}} {{template "header"}}
+<div>
+    <!--<table>
+        {{range .}}
+        <tr>
+            <td>name:{{.Name}}</td>
+        </tr>
+        <tr>
+            {{range .Hobby}}
+            <td>{{.}}</td>
+            {{end}}
+        </tr>
+        {{end}}
+    </table>-->
+
+    <div id="app">
+        <ol>
+            <todo-item v-for="item in dataList" v-bind:todo="item"></todo-item>
+        </ol>
+    </div>
+</div>
+
+<script>
+    require(['jquery', 'vue'], function($, Vue) {
+        Vue.component('todo-item', {
+            delimiters: ['${', '}'],
+            props: ['todo'],
+            template: "<li>${todo.text}</li>"
+        })
+
+        var app7 = new Vue({
+            delimiters: ['${', '}'],
+            el: '#app',
+            data: {
+                dataList: [{
+                    text: 'china'
+                }, {
+                    text: 'america'
+                }, {
+                    text: 'england'
+                }]
+            }
+        })
+    })
+</script>
+
+{{template "footer"}} {{end}}
