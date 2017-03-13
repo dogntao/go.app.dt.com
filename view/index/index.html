@@ -1,12 +1,12 @@
 {{define "index"}} {{template "header"}}
 <div id="app">
-    <!-- <form action="" class="layui-form layui-form-pane">
+    <form action="" class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label class="layui-form-label">
                 姓名
             </label>
             <div class="layui-input-inline">
-                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入姓名" required="" type="text"/>
+                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入姓名" type="text"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -14,7 +14,7 @@
                 密码
             </label>
             <div class="layui-input-inline">
-                <input class="layui-input" name="password" placeholder="请输入密码" required="" type="password"/>
+                <input class="layui-input" name="password" placeholder="请输入密码" type="password"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -24,11 +24,13 @@
                 </button>
             </div>
         </div>
-    </form> -->
-    <input type="text" name="" value="${message}">
+    </form>
+    <label>
+        ${message}
+    </label>
 </div>
 <script>
-    require(['jquery', 'vue1','layui'], function($, Vue) {
+    require(['jquery', 'vue','layui'], function($, Vue) {
         layui.use(['form'],function(){
             var form = layui.form()
             //监听提交
@@ -39,12 +41,10 @@
                 })
                 return false;
             })
-            
-          });
+        });
 
         new Vue({
             el: '#app',
-            // delimiters: ['${','}'],
             data:{
                 message:'123',
             },

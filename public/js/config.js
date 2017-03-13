@@ -5,15 +5,20 @@ require.config({
         "vue": "vue",
         "vue1": "vue1",
         "layui": "/js/components/layui/layui",
-        "layui-private": "/js/private/layui-private"
+        "layui-private": "/js/private/layui-private",
+        "vue-private": "/js/private/vue-private"
     },
     map: {
         "*": {
             "css": "css.min",
-            "layui": "layui-private"
+            "layui": "layui-private",
+            "vue": "vue-private"
         },
         "layui-private": {
-            "layui": "layui"
+            "layui": "layui",
+        },
+        "vue-private": {
+            "vue": "vue1",
         }
     },
     shim: {
