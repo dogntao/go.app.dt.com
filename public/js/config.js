@@ -4,14 +4,22 @@ require.config({
         "jquery": "jquery.min",
         "vue": "vue",
         "vue1": "vue1",
-        "layui": "/js/components/layui/layui"
+        "layui": "/js/components/layui/layui",
+        "layui-private": "layui-private"
     },
     map: {
         "*": {
-            "css": 'css.min'
+            "css": "css.min",
+            "layui": "layui-private"
+        },
+        "layui-private": {
+            "layui": "layui"
         }
     },
     shim: {
-        "layui": ["css!/js/components/layui/css/layui.css"]
+        "layui": {
+            deps: ["css!/js/components/layui/css/layui.css"],
+            exports: "layui"
+        }
     }
 })

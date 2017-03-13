@@ -6,7 +6,7 @@
                 姓名
             </label>
             <div class="layui-input-inline">
-                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入姓名" required type="text"/>
+                <input class="layui-input" lay-verify="required" name="name" placeholder="请输入姓名" required="" type="text"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -14,7 +14,7 @@
                 密码
             </label>
             <div class="layui-input-inline">
-                <input class="layui-input" required name="password" placeholder="请输入密码" type="password"/>
+                <input class="layui-input" name="password" placeholder="请输入密码" required="" type="password"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -30,7 +30,6 @@
     require(['jquery', 'vue1','layui'], function($, Vue) {
         layui.use(['form'],function(){
             var form = layui.form()
-            ,layer = layui.layer;
 
             //监听提交
             form.on('submit(demo1)', function(data){
@@ -38,8 +37,9 @@
                 layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 })
+                return false;
             })
-            return false;
+            
           });
 
         new Vue({
