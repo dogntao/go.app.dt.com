@@ -1,6 +1,6 @@
 {{define "index"}} {{template "header"}}
 <div id="app">
-    <form action="" class="layui-form layui-form-pane">
+    <!-- <form action="" class="layui-form layui-form-pane">
         <div class="layui-form-item">
             <label class="layui-form-label">
                 姓名
@@ -24,13 +24,13 @@
                 </button>
             </div>
         </div>
-    </form>
+    </form> -->
+    <input type="text" name="" value="${message}">
 </div>
 <script>
     require(['jquery', 'vue1','layui'], function($, Vue) {
         layui.use(['form'],function(){
             var form = layui.form()
-
             //监听提交
             form.on('submit(demo1)', function(data){
                 // consle.log(data);
@@ -44,9 +44,9 @@
 
         new Vue({
             el: '#app',
-            delimiters: ['${','}'],
+            // delimiters: ['${','}'],
             data:{
-                message:'',
+                message:'123',
             },
             methods:{
             }

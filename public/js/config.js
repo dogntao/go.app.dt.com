@@ -5,7 +5,7 @@ require.config({
         "vue": "vue",
         "vue1": "vue1",
         "layui": "/js/components/layui/layui",
-        "layui-private": "layui-private"
+        "layui-private": "/js/private/layui-private"
     },
     map: {
         "*": {
