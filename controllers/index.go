@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"html/template"
 	"strings"
+
+	"go.app.dt.com/utils"
 )
 
 type User struct {
@@ -24,6 +26,7 @@ func (c *IndexController) Login() {
 			fmt.Println(err)
 		}
 	} else {
+		utils.Con()
 		user.userName = req.PostFormValue("username")
 		user.passWord = req.PostFormValue("password")
 		fmt.Fprintln(rep, user)
