@@ -25,6 +25,6 @@ require.config({
         "layui": {
             deps: ["css!/js/components/layui/css/layui.css"],
             exports: "layui"
-        }
+        },
     }
 })

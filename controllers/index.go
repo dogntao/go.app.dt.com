@@ -26,7 +26,7 @@ func (c *IndexController) Login() {
 			fmt.Println(err)
 		}
 	} else {
-		utils.Con()
+		utils.Connect()
 		user.userName = req.PostFormValue("username")
 		user.passWord = req.PostFormValue("password")
 		fmt.Fprintln(rep, user)

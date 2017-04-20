@@ -2,8 +2,9 @@ package utils
 
 import (
 	"database/sql"
-
 	"fmt"
+
+	"go.app.dt.com/conf"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,10 +12,9 @@ import (
 type Mysql struct {
 }
 
-func Con() {
-	fmt.Println("this is mysql")
-	// db, err := sql.Open("mysql", "haowj:uRWgO4Eq3jUFXAfP@tcp(123.59.34.144:3306)/dt?charset=utf8")
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/dt?charset=utf8")
+func Connect(c string) {
+	fmt.Println(conf.XMmall)
+	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/dt?charset=utf8")
 	checkErr(err)
 
 	// 查询数据
