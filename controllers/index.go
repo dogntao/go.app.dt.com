@@ -26,10 +26,13 @@ func (c *IndexController) Login() {
 			fmt.Println(err)
 		}
 	} else {
-		utils.Connect()
-		user.userName = req.PostFormValue("username")
-		user.passWord = req.PostFormValue("password")
-		fmt.Fprintln(rep, user)
+		db_store := new(utils.DbStore)
+		db := db_store.GetConn()
+		fmt.Println(db)
+		fmt.Println("123")
+		// user.userName = req.PostFormValue("username")
+		// user.passWord = req.PostFormValue("password")
+		// fmt.Fprintln(rep, user)
 	}
 }
 
