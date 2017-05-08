@@ -22,12 +22,10 @@ type Mysql struct {
 	pass    string
 	dbname  string
 	charset string
-
-	db *sql.DB
 }
 
-func Connect(c Conf) (mysql *Mysql, err error) {
-	mysql = new(Mysql)
+func Connect(c Conf) (db *sql.DB, err error) {
+	mysql := new(Mysql)
 	mysql.host = c["host"]
 	mysql.user = c["user"]
 	mysql.pass = c["pass"]
@@ -36,9 +34,8 @@ func Connect(c Conf) (mysql *Mysql, err error) {
 
 	// db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/dt?charset=utf8")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s", mysql.user, mysql.pass, mysql.host, mysql.dbname, mysql.charset)
-	mysql.db, err = sql.Open("mysql", dsn)
+	db, err = sql.Open("mysql", dsn)
 	checkErr(err)
-
 	return
 }
 

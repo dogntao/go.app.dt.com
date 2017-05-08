@@ -7,32 +7,42 @@
  */
 package utils
 
-import "go.app.dt.com/conf"
+import (
+	"database/sql"
+
+	"go.app.dt.com/conf"
+
+	"fmt"
+)
 
 // mysql连接池
 type DbStore struct {
-	pool chan *Mysql
+	pool chan *sql.DB
 }
 
 // 创建连接池
-func NewDbStore() {
-	store := new(DbStore)
-	store.pool = make(chan *Mysql, 50)
+func (d *DbStore) New() {
+	d.pool = make(chan *sql.DB, 50)
 	for i := 0; i < 50; i++ {
 		db, err := Connect(conf.XMmall)
 		checkErr(err)
-		store.pool <- db
+		d.pool <- db
 	}
 }
 
 // 获取连接池
-func (d *DbStore) GetConn() (db *Mysql) {
+func (d *DbStore) GetConn() (db *sql.DB) {
+	fmt.Println("d.pool:")
+	fmt.Println(d.pool)
+	if d.pool == nil {
+		d.New()
+	}
 	db = <-d.pool
 	return
 }
 
 // 返回连接池
-func (d *DbStore) RetConn(db *Mysql) {
+func (d *DbStore) RetConn(db *sql.DB) {
 	d.pool <- db
 	return
 }

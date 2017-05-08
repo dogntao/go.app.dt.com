@@ -8,7 +8,7 @@
 package conf
 
 var XMmall = map[string]string{
-	"host":    "127.0.0.1:3306",
+	"host":    "db:3306",
 	"user":    "root",
 	"pass":    "root",
 	"dbname":  "dt",
