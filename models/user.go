@@ -1,7 +1,8 @@
 package models
 
-import "fmt"
-import "reflect"
+import (
+	"fmt"
+)
 
 type User struct {
 	id         int64
@@ -17,17 +18,31 @@ func (u *User) LoginCheck() {
 	db := dbStore.GetConn()
 	defer dbStore.RetConn(db)
 
-	var user User
-	t := reflect.TypeOf(user)
-	for k := 0; k < t.NumField(); k++ {
-		fmt.Println(t.Field(k).Name)
+	stmt, err := db.Prepare("SELECT * from cms_user where user_name=?")
+	checkErr(err)
+	rows, _ := stmt.Query(u.UserName)
+	cols, _ := rows.Columns()
+	fmt.Println(cols)
+
+	rawResult := make([][]byte, len(cols))
+	result := make([]string, len(cols))
+	dest := make([]interface{}, len(cols))
+	for i, _ := range rawResult {
+		dest[i] = &rawResult[i]
+	}
+	if rows.Next() {
+		err = rows.Scan(dest...)
+		for i, raw := range rawResult {
+			if raw == nil {
+				result[i] = ""
+			} else {
+				result[i] = string(raw)
+			}
+		}
+	} else {
 	}
 
-	stmt, err := db.Prepare("SELECT id,pass_word,company_id,role,status from cms_user where user_name=?")
-	checkErr(err)
-	rows := stmt.QueryRow(u.UserName)
-	err = rows.Scan(&u.id, &u.pass_word, &u.company_id, &u.role, &u.status)
-	checkErr(err)
-	fmt.Println(u)
+	fmt.Println(result)
+
 	return
 }
