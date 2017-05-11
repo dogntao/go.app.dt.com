@@ -2,47 +2,44 @@ package models
 
 import (
 	"fmt"
+	"reflect"
 )
 
 type User struct {
-	id         int64
-	UserName   string
-	PassWord   string
-	pass_word  string
-	company_id int64
-	role       int64
-	status     int64
+	Id        int64
+	UserName  string
+	PassWord  string
+	CompanyId int64
+	Role      int64
+	Status    int64
 }
 
-func (u *User) LoginCheck() {
+type UserInfo struct {
+	User
+	UserName string
+	PassWord string
+}
+
+func (u *UserInfo) LoginCheck() {
 	db := dbStore.GetConn()
 	defer dbStore.RetConn(db)
 
 	stmt, err := db.Prepare("SELECT * from cms_user where user_name=?")
 	checkErr(err)
-	rows, _ := stmt.Query(u.UserName)
-	cols, _ := rows.Columns()
-	fmt.Println(cols)
-
-	rawResult := make([][]byte, len(cols))
-	result := make([]string, len(cols))
-	dest := make([]interface{}, len(cols))
-	for i, _ := range rawResult {
-		dest[i] = &rawResult[i]
-	}
-	if rows.Next() {
-		err = rows.Scan(dest...)
-		for i, raw := range rawResult {
-			if raw == nil {
-				result[i] = ""
-			} else {
-				result[i] = string(raw)
-			}
-		}
-	} else {
+	row := stmt.QueryRow(u.UserName)
+	// 把字段解析到struct
+	user := &User{}
+	ele := reflect.ValueOf(user).Elem()
+	leng := ele.NumField()
+	oneRow := make([]interface{}, leng)
+	for i := 0; i < leng; i++ {
+		oneRow[i] = ele.Field(i).Addr().Interface()
 	}
 
-	fmt.Println(result)
+	err = row.Scan(oneRow...)
+	checkErr(err)
+	// result = append(result, ele.Interface())
+	fmt.Println(user.CompanyId)
 
 	return
 }

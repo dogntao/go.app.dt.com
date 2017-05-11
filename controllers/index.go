@@ -20,7 +20,7 @@ func (c *IndexController) Login() {
 			fmt.Println(err)
 		}
 	} else {
-		user := &models.User{}
+		user := &models.UserInfo{}
 		user.UserName = req.PostFormValue("username")
 		user.PassWord = req.PostFormValue("password")
 		fmt.Fprintln(rep, user)
