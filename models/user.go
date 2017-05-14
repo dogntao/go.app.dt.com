@@ -7,20 +7,12 @@ import (
 )
 
 type User struct {
-	id        int64
-	user_name string
-	pass_word string
-	// company_id int64
-	// role       int64
-	// status     int64
-}
-type User2 struct {
-	Id       int64
-	UserName string
-	PassWord string
-	// CompanyId int64
-	// Role      int64
-	// Status    int64
+	Id         int64
+	User_name  string
+	Pass_word  string
+	Company_id int64
+	Role       int64
+	Status     int64
 }
 
 type UserInfo struct {
@@ -40,13 +32,13 @@ func (u *UserInfo) LoginCheck() {
 	t := reflect.TypeOf(user)
 	selArr := make([]string, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
-		selArr[i] = t.Field(i).Name
+		selArr[i] = strings.ToLower(t.Field(i).Name)
 	}
 	selField := strings.Join(selArr, ",")
 	fmt.Println(selField)
 
 	// 接收结果
-	user2 := &User2{}
+	user2 := &User{}
 	ele := reflect.ValueOf(user2).Elem()
 	leng := ele.NumField()
 	oneRow := make([]interface{}, leng)
