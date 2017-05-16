@@ -26,24 +26,6 @@ func (c *IndexController) Login() {
 		fmt.Fprintln(rep, user)
 
 		user.LoginCheck()
-
-		// db := dbStore.GetConn()
-		// defer dbStore.RetConn(db)
-		// fmt.Println(db)
-		// fmt.Println("con")
-
-		// 插入数据
-		// stmt, err := db.Prepare("INSERT INTO cms_company (user_name,pass_word) values(?,?)")
-		// checkErr(err)
-		// res, err := stmt.Exec("test1", "123456")
-		// checkErr(err)
-		// id, err := res.LastInsertId()
-		// checkErr(err)
-		// fmt.Println(id)
-
-		// user.userName = req.PostFormValue("username")
-		// user.passWord = req.PostFormValue("password")
-		// fmt.Fprintln(rep, user)
 	}
 }
 
