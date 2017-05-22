@@ -22,6 +22,8 @@ type Mysql struct {
 	pass    string
 	dbname  string
 	charset string
+
+	rows *sql.Rows
 }
 
 func Connect(c Conf) (db *sql.DB, err error) {
@@ -44,3 +46,5 @@ func checkErr(err error) {
 		panic(err)
 	}
 }
+
+// fetchOne

@@ -50,7 +50,7 @@ func getOne(user User, tab string, userName string) *User {
 
 	err = row.Scan(oneRow...)
 	checkErr(err)
-	fmt.Println(user2.Company_id)
+	// fmt.Println(user2.Company_id)
 	return user2
 
 }
