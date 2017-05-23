@@ -1,6 +1,8 @@
 package models
 
 import "fmt"
+import "crypto/md5"
+import "encoding/hex"
 
 type User struct {
 	id         int64
@@ -24,5 +26,13 @@ func (u *UserInfo) LoginCheck() {
 	checkErr(err)
 	err = mysql.FetchOne()
 	checkErr(err)
-	fmt.Println(mysql.RetMap)
+	// 验证用户名与密码
+	h := md5.New()
+	h.Write([]byte(u.PassWord))
+	b := h.Sum(nil)
+	passMd5 := hex.EncodeToString(b)
+
+	if mysql.RetMap["pass_word"] == passMd5 {
+		fmt.Println("123")
+	}
 }
