@@ -1,6 +1,5 @@
 package models
 
-import "fmt"
 import "crypto/md5"
 import "encoding/hex"
 
@@ -19,12 +18,12 @@ type UserInfo struct {
 	PassWord string
 }
 
-func (u *UserInfo) LoginCheck() {
+func (u *UserInfo) LoginCheck() (check bool) {
 	var user User
 	con := "user_name=?"
-	err := mysql.Query(user, "cms_user", con, u.UserName)
+	err := Dtsql.Query(user, "cms_user", con, u.UserName)
 	checkErr(err)
-	err = mysql.FetchOne()
+	err = Dtsql.FetchOne()
 	checkErr(err)
 	// 验证用户名与密码
 	h := md5.New()
@@ -32,7 +31,9 @@ func (u *UserInfo) LoginCheck() {
 	b := h.Sum(nil)
 	passMd5 := hex.EncodeToString(b)
 
-	if mysql.RetMap["pass_word"] == passMd5 {
-		fmt.Println("123")
+	check = false
+	if Dtsql.RetMap["pass_word"] == passMd5 {
+		check = true
 	}
+	return
 }
