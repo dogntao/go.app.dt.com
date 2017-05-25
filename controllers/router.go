@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
@@ -38,13 +40,25 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// 调试输出
-	// fmt.Println(router)
-	// fmt.Println(req.Method)
+	if funs[router.con] != nil {
+		// 反射调用对应controller对应方法
+		conVal := reflect.ValueOf(funs[router.con])
+		method := conVal.MethodByName(router.ac)
 
-	// 反射调用对应controller对应方法
-	conVal := reflect.ValueOf(funs[router.con])
-	method := conVal.MethodByName(router.ac)
-	if method.IsValid() {
-		method.Call([]reflect.Value{})
+		// 获取cookie
+		cookie, _ := req.Cookie("user_info")
+		if cookie != nil {
+			cookieValue := cookie.Value
+			cookieMap := make(map[string]interface{})
+			err := json.Unmarshal([]byte(cookieValue), &cookieMap)
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Println(cookieMap)
+		}
+
+		if method.IsValid() {
+			method.Call([]reflect.Value{})
+		}
 	}
 }
