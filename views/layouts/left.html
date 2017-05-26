@@ -1,5 +1,5 @@
 {{define "left"}} {{template "header"}}
-<ul class="layui-nav layui-nav-tree layui-nav-side">
+<ul style="margin-top:58px" class="layui-nav layui-nav-tree layui-nav-side">
     <li class="layui-nav-item">
         <a href="javascript:;"><i class="layui-icon">&#xe63c;</i> 订单</a>
         <dl class="layui-nav-child">
@@ -11,17 +11,17 @@
             </dd>
         </dl>
     </li>
-    <li class="layui-nav-item">
+    <li class="layui-nav-item layui-nav-itemed">
         <a href="javascript:;"><i class="layui-icon">&#xe613;</i> 客户</a>
-        <dl class="layui-nav-child">
-            <dd>
-                <a href="javascript:;"><i class="layui-icon">&#xe654;</i> 新增客户</a>
+        <dl class="layui-nav-child ">
+            <dd class="layui-this">
+                <a href="/Customer/Add"><i class="layui-icon">&#xe654;</i> 新增客户</a>
             </dd>
             <dd>
-                <a href="javascript:;"><i class="layui-icon">&#xe60a;</i> 客户管理</a>
+                <a href="/Customer/Manage"><i class="layui-icon">&#xe60a;</i> 客户管理</a>
             </dd>
         </dl>
     </li>
 </ul>
-<div id="right" style="margin-left:200px; padding:10px">
+<div id="right" style="margin-left:200px; padding:20px">
     {{end}}

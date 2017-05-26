@@ -1,0 +1,20 @@
+.header{
+    height: 60px;
+    line-height: 60px; 
+    padding: 0 20px; 
+    background-color:#393D49;
+    color: #c2c2c2;
+}
+
+.top_left{float: left}
+
+.logo{
+    width: 150px;
+    height: 60px;
+    text-align: center;
+    font-size: 18px
+}
+
+.top_right{
+    float: right
+}

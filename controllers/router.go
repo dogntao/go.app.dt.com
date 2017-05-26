@@ -23,8 +23,9 @@ type Router struct {
 
 // 注册路由
 var funs = map[string]interface{}{
-	"Index": &IndexController{},
-	"Order": &OrderController{},
+	"Index":    &IndexController{},
+	"Order":    &OrderController{},
+	"Customer": &CustomerController{},
 }
 
 // 路由转发(/Index/index)
