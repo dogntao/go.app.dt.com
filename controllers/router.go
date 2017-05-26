@@ -1,11 +1,13 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"reflect"
 	"strings"
+
+	"fmt"
+
+	"go.app.dt.com/utils"
 )
 
 // 保存输入和输出
@@ -39,26 +41,28 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 			router.ac = value
 		}
 	}
-	// 调试输出
+
 	if funs[router.con] != nil {
-		// 反射调用对应controller对应方法
-		conVal := reflect.ValueOf(funs[router.con])
-		method := conVal.MethodByName(router.ac)
-
 		// 获取cookie
-		cookie, _ := req.Cookie("user_info")
-		if cookie != nil {
-			cookieValue := cookie.Value
-			cookieMap := make(map[string]interface{})
-			err := json.Unmarshal([]byte(cookieValue), &cookieMap)
-			if err != nil {
-				fmt.Println(err)
+		cookieMap, err := utils.GetCookie(req, "user_info")
+		fmt.Println(cookieMap, err)
+		if err != nil {
+			// 无cookie跳转到登录页
+			conVal := reflect.ValueOf(funs["Index"])
+			method := conVal.MethodByName("Login")
+			if method.IsValid() {
+				method.Call([]reflect.Value{})
 			}
+		} else {
+			// 有cookie跳转到对应页面
 			fmt.Println(cookieMap)
+			// 反射调用对应controller对应方法
+			conVal := reflect.ValueOf(funs[router.con])
+			method := conVal.MethodByName(router.ac)
+			if method.IsValid() {
+				method.Call([]reflect.Value{})
+			}
 		}
 
-		if method.IsValid() {
-			method.Call([]reflect.Value{})
-		}
 	}
 }

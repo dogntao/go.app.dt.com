@@ -5,11 +5,8 @@ import (
 	"html/template"
 	"strings"
 
-	"encoding/json"
-
-	"net/http"
-
 	"go.app.dt.com/models"
+	"go.app.dt.com/utils"
 )
 
 type IndexController struct {
@@ -31,10 +28,7 @@ func (c *IndexController) Login() {
 		if check {
 			// 保存cookie
 			delete(models.Dtsql.RetMap, "pass_word")
-			str, _ := json.Marshal(models.Dtsql.RetMap)
-			cookie := &http.Cookie{Name: "user_info", Value: fmt.Sprintf("%s", string(str)), Path: "/", MaxAge: 86400}
-			http.SetCookie(rep, cookie)
-			fmt.Println(string(str))
+			utils.SetCooke(rep, "user_info", models.Dtsql.RetMap)
 		}
 	}
 }
