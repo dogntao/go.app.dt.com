@@ -1,0 +1,15 @@
+{{define "add"}} {{template "left"}}
+<style type="text/css">
+
+</style>
+<div id="add_order">
+    123
+</div>
+<script>
+    require(['jquery', 'layui'], function($) {
+        layui.use(['element', 'form'], function() {
+            var form = layui.form()
+        });
+    })
+</script>
+{{template "footer"}} {{end}}

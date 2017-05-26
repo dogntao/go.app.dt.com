@@ -14,7 +14,7 @@ func SetCooke(rsp http.ResponseWriter, key string, value map[string]string) {
 	// josn base64 encode
 	valueStr := base64.StdEncoding.EncodeToString(valueByte)
 	// set cookie
-	cookie := &http.Cookie{Name: key, Value: valueStr, MaxAge: 86400}
+	cookie := &http.Cookie{Name: key, Value: valueStr, Path: "/", MaxAge: 86400}
 	http.SetCookie(rsp, cookie)
 }
 

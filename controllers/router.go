@@ -24,6 +24,7 @@ type Router struct {
 // 注册路由
 var funs = map[string]interface{}{
 	"Index": &IndexController{},
+	"Order": &OrderController{},
 }
 
 // 路由转发(/Index/index)
@@ -56,11 +57,16 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// 有cookie跳转到对应页面
 			fmt.Println(cookieMap)
-			// 反射调用对应controller对应方法
-			conVal := reflect.ValueOf(funs[router.con])
-			method := conVal.MethodByName(router.ac)
-			if method.IsValid() {
-				method.Call([]reflect.Value{})
+			// 登录页跳到新增订单页
+			if router.con == "Index" && router.con == "Login" {
+				http.Redirect(rep, req, "/Order/Add", http.StatusMovedPermanently)
+			} else {
+				// 反射调用对应controller对应方法
+				conVal := reflect.ValueOf(funs[router.con])
+				method := conVal.MethodByName(router.ac)
+				if method.IsValid() {
+					method.Call([]reflect.Value{})
+				}
 			}
 		}
 
