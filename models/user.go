@@ -23,7 +23,7 @@ func (u *UserInfo) LoginCheck() (check bool) {
 	con := "user_name=?"
 	err := Dtsql.Query(user, "cms_user", con, u.UserName)
 	checkErr(err)
-	err = Dtsql.FetchOne()
+	err = Dtsql.FetchRow()
 	checkErr(err)
 	// 验证用户名与密码
 	h := md5.New()
