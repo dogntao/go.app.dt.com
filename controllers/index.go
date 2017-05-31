@@ -13,17 +13,17 @@ type IndexController struct {
 	BaseController
 }
 
+// 登录
 func (c *IndexController) Login() {
 	// 获取cookie
 	_, err := utils.GetCookie(req, "user_info")
 	if req.Method == "GET" {
-
 		if err != nil {
 			// 无cookie登录
 			c.Display("views/index/index.html")
 		} else {
 			// 有cookie跳到新增订单页
-			http.Redirect(rep, req, "http://127.0.0.1:6688/Order/Add", http.StatusMovedPermanently)
+			http.Redirect(rep, req, "/Order/Add", http.StatusMovedPermanently)
 		}
 
 	} else {
@@ -38,6 +38,13 @@ func (c *IndexController) Login() {
 			fmt.Fprintln(rep, true)
 		}
 	}
+}
+
+// 登出
+func (c *IndexController) Logext() {
+	// 删除cookie
+	utils.DelCookie(rep, "user_info")
+	// http.Redirect(rep, req, "/Index/Login", http.StatusMovedPermanently)
 }
 
 func (c *IndexController) Index() {

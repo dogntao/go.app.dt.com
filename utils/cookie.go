@@ -33,3 +33,10 @@ func GetCookie(req *http.Request, key string) (map[string]interface{}, error) {
 		return nil, errors.New("no cookie")
 	}
 }
+
+// 删除cookie
+func DelCookie(rsp http.ResponseWriter, key string) {
+	// set cookie
+	cookie := &http.Cookie{Name: key, Path: "/", MaxAge: -1}
+	http.SetCookie(rsp, cookie)
+}

@@ -6,8 +6,12 @@ import (
 	"strings"
 )
 
-//
 type BaseController struct {
+}
+
+// 初始化
+func NewBaseController() {
+	fmt.Println("init base")
 }
 
 // 根据路径获取文件名(不带后缀)

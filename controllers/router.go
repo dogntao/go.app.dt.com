@@ -46,8 +46,7 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 
 	if funs[router.con] != nil {
 		// 获取cookie
-		cookieMap, err := utils.GetCookie(req, "user_info")
-		fmt.Println(cookieMap, err)
+		_, err := utils.GetCookie(req, "user_info")
 		if err != nil {
 			// 无cookie跳转到登录页
 			conVal := reflect.ValueOf(funs["Index"])
@@ -57,7 +56,7 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			// 有cookie跳转到对应页面
-			fmt.Println(cookieMap)
+			fmt.Println(router)
 			// 登录页跳到新增订单页
 			if router.con == "Index" && router.con == "Login" {
 				http.Redirect(rep, req, "/Order/Add", http.StatusMovedPermanently)
