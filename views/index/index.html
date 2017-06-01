@@ -1,56 +1,8 @@
 {{define "index"}} {{template "header"}}
-<style type="text/css">
-    #login_box {
-        position: absolute;
-        width: 320px;
-        left: 50%;
-        margin-left: -160px;
-        top: 50%;
-        margin-top: -92px
-    }
-</style>
-<div id="login_box">
-    <div method="POST" action="" class="layui-form layui-form-pane">
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                姓名
-            </label>
-            <div class="layui-input-block">
-                <input class="layui-input" lay-verify="required" name="username" placeholder="请输入姓名" type="text" />
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                密码
-            </label>
-            <div class="layui-input-block">
-                <input class="layui-input" name="password" placeholder="请输入密码" lay-verify="required" type="password" />
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div>
-                <button class="layui-btn" lay-filter="login" lay-submit="" style="width: 100%">
-                    登录
-                </button>
-            </div>`
-        </div>
-    </div>
-</div>
 <script>
     require(['jquery', 'layui'], function($) {
         layui.use(['form'], function() {
             var form = layui.form()
-                //监听提交
-            form.on('submit(login)', function(data) {
-                $.post("/Index/Login", data.field, function(result) {
-                    if (result) {
-                        location.href = "/Order/Add";
-                    } else {
-                        console.log("false");
-                    }
-                });
-                // return false;
-            })
         });
     })
 </script>

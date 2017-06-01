@@ -1,0 +1,45 @@
+{{define "header"}}
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>帮你美</title>
+    <script src="/js/components/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js/components/layui/css/layui.css">
+    <script>
+        layui.use(['element'], function() {});
+    </script>
+    <style>
+        .header {
+            text-align: right
+        }
+        
+        .logo {
+            float: left;
+            height: 60px;
+            line-height: 60px;
+            width: 200px;
+            text-align: center;
+            font-size: 18px
+        }
+        
+        .layui-nav .layui-nav-item a {
+            padding: 0 40px
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="layui-nav header" lay-filter="">
+        <li class="logo">帮你美</li>
+        <li class="layui-nav-item layui-this"><a href="/index.html">首页</a></li>
+        <li class="layui-nav-item"><a href="/course.html">最新课程</a></li>
+        <li class="layui-nav-item"><a href="">学员实操</a></li>
+        <li class="layui-nav-item"><a href="">产品介绍</a></li>
+        <li class="layui-nav-item"><a href="/about.html">关于我们</a></li>
+    </ul>
+
+    <div id="right" style="margin-left:200px; padding:20px">
+        {{end}}

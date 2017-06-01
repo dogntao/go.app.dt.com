@@ -4,10 +4,6 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
-
-	"fmt"
-
-	"go.app.dt.com/utils"
 )
 
 // 保存输入和输出
@@ -24,6 +20,7 @@ type Router struct {
 // 注册路由
 var funs = map[string]interface{}{
 	"Index":    &IndexController{},
+	"Admin":    &AdminController{},
 	"Order":    &OrderController{},
 	"Customer": &CustomerController{},
 }
@@ -44,31 +41,20 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if funs[router.con] != nil {
-		// 获取cookie
-		_, err := utils.GetCookie(req, "user_info")
-		if err != nil {
-			// 无cookie跳转到登录页
-			conVal := reflect.ValueOf(funs["Index"])
-			method := conVal.MethodByName("Login")
-			if method.IsValid() {
-				method.Call([]reflect.Value{})
-			}
-		} else {
-			// 有cookie跳转到对应页面
-			fmt.Println(router)
-			// 登录页跳到新增订单页
-			if router.con == "Index" && router.con == "Login" {
-				http.Redirect(rep, req, "/Order/Add", http.StatusMovedPermanently)
-			} else {
-				// 反射调用对应controller对应方法
-				conVal := reflect.ValueOf(funs[router.con])
-				method := conVal.MethodByName(router.ac)
-				if method.IsValid() {
-					method.Call([]reflect.Value{})
-				}
-			}
-		}
+	// 默认跳转到首页
+	if router.con == "" {
+		router.con = "Index"
+	}
+	if router.ac == "" {
+		router.ac = "Index"
+	}
 
+	if funs[router.con] != nil {
+		// 反射调用对应controller对应方法
+		conVal := reflect.ValueOf(funs[router.con])
+		method := conVal.MethodByName(router.ac)
+		if method.IsValid() {
+			method.Call([]reflect.Value{})
+		}
 	}
 }

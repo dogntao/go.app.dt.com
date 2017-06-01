@@ -21,7 +21,7 @@ type CustomerController struct {
 
 func (c *CustomerController) Add() {
 	if req.Method == "GET" {
-		c.Display("views/customer/add.html")
+		c.DisplayAdmin("views/customer/add.html")
 	} else {
 		cus := make(map[string]interface{}, 0)
 		cus["name"] = "test"
@@ -54,7 +54,7 @@ func (c *CustomerController) Update() {
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
-		c.Display("views/customer/manage.html")
+		c.DisplayAdmin("views/customer/manage.html")
 	} else {
 	}
 }

@@ -5,8 +5,9 @@ type OrderController struct {
 }
 
 func (o *OrderController) Add() {
+	o.ALoginCheck()
 	if req.Method == "GET" {
-		o.Display("views/order/add.html")
+		o.DisplayAdmin("views/order/add.html")
 	} else {
 	}
 }
