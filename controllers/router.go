@@ -10,12 +10,9 @@ import (
 var (
 	req *http.Request
 	rep http.ResponseWriter
-)
-
-type Router struct {
 	con string
-	ac  string
-}
+	act string
+)
 
 // 注册路由
 var funs = map[string]interface{}{
@@ -32,29 +29,30 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 	rep = w
 
 	// 根据/解析对应controller对应方法
-	router := &Router{}
 	for key, value := range strings.Split(req.RequestURI, "/") {
+		// 首字母大写
+		value = strings.Title(value)
 		if key == 1 {
-			router.con = value
+			con = value
 		} else if key == 2 {
-			router.ac = value
+			act = value
 		}
 	}
 
-	// 默认跳转到首页
-	if router.con == "" {
-		router.con = "Index"
-	}
-	if router.ac == "" {
-		router.ac = "Index"
+	// 默认跳转到ndex方法
+	if act == "" {
+		act = "Index"
 	}
 
-	if funs[router.con] != nil {
+	if funs[con] != nil {
 		// 反射调用对应controller对应方法
-		conVal := reflect.ValueOf(funs[router.con])
-		method := conVal.MethodByName(router.ac)
+		conVal := reflect.ValueOf(funs[con])
+		method := conVal.MethodByName(act)
 		if method.IsValid() {
 			method.Call([]reflect.Value{})
 		}
+	} else {
+		// 页面没找到跳转到首页
+		http.Redirect(rep, req, "/index/index", http.StatusFound)
 	}
 }
