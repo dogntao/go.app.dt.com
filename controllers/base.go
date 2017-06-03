@@ -30,8 +30,9 @@ func (b *BaseController) DisplayAdmin(page string) {
 
 // 显示前台页面
 func (b *BaseController) Display(page string) {
-	tem, _ := template.ParseFiles(page, "views/layouts/index/have_left.html", "views/layouts/index/no_left.html", "views/layouts/index/header.html", "views/layouts/index/footer.html")
+	tem, _ := template.ParseFiles(page, "views/layouts/index/about_left.html", "views/layouts/index/have_left.html", "views/layouts/index/no_left.html", "views/layouts/index/header.html", "views/layouts/index/footer.html")
 	pageName := getFileName(page)
+	assign["Con"] = con
 	assign["Act"] = act
 	tem.ExecuteTemplate(rep, pageName, assign)
 }

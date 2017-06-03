@@ -11,22 +11,29 @@
     <script src="/js/components/layui/layui.js"></script>
     <link rel="stylesheet" href="/js/components/layui/css/layui.css">
     <link rel="stylesheet" href="/css/layout_index.css">
+    <script>
+        require(['jquery', 'vue'], function ($, Vue) {
+            layui.use(['element'], function () { });
+
+            new Vue({
+                el: '#body',
+                data: {
+                    con: '{{.Con}}',
+                    act: '{{.Act}}'
+                },
+            })
+        })
+    </script>
 </head>
 
 <body id="body">
-    <ul class="layui-nav header" id="header">
+    <ul class="layui-nav header">
         <li class="logo">帮你美</li>
-        <li class="layui-nav-item" :class="{'layui-this':act=='Index'}"><a href="/index/index">首页</a></li>
-        <li class="layui-nav-item" :class="{'layui-this':act=='Course'}"><a href="/index/course">最新课程</a></li>
-        <li class="layui-nav-item" :class="{'layui-this':act=='Student'}"><a href="/index/student">学员实操</a></li>
-        <li class="layui-nav-item" :class="{'layui-this':act=='Product'}"><a href="/index/product">产品介绍</a></li>
-        <li class="layui-nav-item" :class="{'layui-this':act=='About'}"><a href="/index/about">关于我们</a></li>
+        <li class="layui-nav-item" :class="{'layui-this':con=='Index'}"><a href="/index/index">首页</a></li>
+        <li class="layui-nav-item" :class="{'layui-this':con=='Course'}"><a href="/course/index">最新课程</a></li>
+        <li class="layui-nav-item" :class="{'layui-this':con=='Student'}"><a href="/student/index">学员实操</a></li>
+        <li class="layui-nav-item" :class="{'layui-this':con=='Product'}"><a href="/product/index">产品介绍</a></li>
+        <li class="layui-nav-item" :class="{'layui-this':con=='About'}"><a href="/about/about">关于我们</a></li>
     </ul>
-
-    <script>
-        require(['layui'], function(layui) {
-            layui.use(['element'], function() {});
-        })
-    </script>
 
     {{end}}

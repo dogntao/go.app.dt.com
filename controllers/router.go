@@ -17,6 +17,10 @@ var (
 // 注册路由
 var funs = map[string]interface{}{
 	"Index":    &IndexController{},
+	"Course":   &CourseController{},
+	"Student":  &StudentController{},
+	"Product":  &ProductController{},
+	"About":    &AboutController{},
 	"Admin":    &AdminController{},
 	"Order":    &OrderController{},
 	"Customer": &CustomerController{},

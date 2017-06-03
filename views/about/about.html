@@ -1,0 +1,24 @@
+{{define "about"}} {{template "about_left" .}}
+<div class="content">
+    <fieldset class="layui-elem-field">
+        <legend class="title">公司简介</legend>
+        <div class="layui-field-box">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;河南帮你美商贸有限公司，是一家从事半永久化妆行业的公司，成立于2017年，总部位于郑州高新技术产业开发区。 要从事于半持久化妆技术的研发、培训，半持久化妆产品、仪器的研制、销售。
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    require(['jquery', 'vue'], function ($, Vue) {
+        // layui.use(['form'], function() {});
+
+        // new Vue({
+        //     el: '#body',
+        //     data: {
+        //         act: '{{.Act}}'
+        //     },
+        // })
+    })
+
+</script>
+{{template "footer"}} {{end}}

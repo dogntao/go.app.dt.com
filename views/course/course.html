@@ -1,4 +1,4 @@
-{{define "course"}} {{template "no_left"}}
+{{define "course"}} {{template "no_left" .}}
 <div class="content">
     <fieldset class="layui-elem-field">
         <legend class="title">第23期眉眼唇密训课</legend>
@@ -43,12 +43,12 @@
 
 <script>
     require(['jquery', 'vue'], function($, Vue) {
-        new Vue({
-            el: '#body',
-            data: {
-                act: '{{.Act}}'
-            },
-        })
+        // new Vue({
+        //     el: '#body',
+        //     data: {
+        //         act: '{{.Act}}'
+        //     },
+        // })
     })
 </script>
 {{template "footer"}} {{end}}

@@ -1,0 +1,9 @@
+{{define "about_left"}} {{template "header" .}}
+<ul class="layui-nav layui-nav-tree layui-nav-side left">
+    <li class="layui-nav-item" :class="{'layui-this':act=='About'}"><a href="/about/about">公司简介</a></li>
+    <li class="layui-nav-item" :class="{'layui-this':act=='Team'}"><a href="/about/team">团队介绍</a></li>
+    <li class="layui-nav-item" :class="{'layui-this':act=='Contact'}"><a href="/about/contact">联系我们</a></li>
+</ul>
+
+<div class="right" style="margin-left:200px">
+    {{end}}
