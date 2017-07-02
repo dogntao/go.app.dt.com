@@ -4,9 +4,16 @@ import (
 	"fmt"
 	"net/http"
 
+	"encoding/json"
+
 	"go.app.dt.com/models"
 	"go.app.dt.com/utils"
 )
+
+type loginResult struct {
+	code   int64
+	result string
+}
 
 type AdminController struct {
 	BaseController
@@ -30,12 +37,18 @@ func (c *AdminController) Login() {
 		user.UserName = req.PostFormValue("username")
 		user.PassWord = req.PostFormValue("password")
 		check := user.LoginCheck()
+		lr := &loginResult{}
+		lr.code = 201
+		lr.result = "faile"
 		if check {
 			// 保存cookie
 			delete(models.Dtsql.RetMap, "pass_word")
 			utils.SetCooke(rep, "user_info", models.Dtsql.RetMap)
-			fmt.Fprintln(rep, true)
+			lr.code = 200
+			lr.result = "success"
 		}
+		r, _ := json.Marshal(lr)
+		fmt.Fprintln(rep, string(r))
 	}
 }
 

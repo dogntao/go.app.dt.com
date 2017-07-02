@@ -24,14 +24,13 @@ func (c *CustomerController) Add() {
 		c.DisplayAdmin("views/customer/add.html")
 	} else {
 		cus := make(map[string]interface{}, 0)
-		cus["name"] = "test"
-		cus["mobile"] = "18610040137"
-		cus["address"] = "河南 禹州"
-		cus["balance"] = "600"
-		cus["discount"] = "100"
+		cus["name"] = req.PostFormValue("name")
+		cus["mobile"] = req.PostFormValue("mobile")
+		cus["address"] = req.PostFormValue("address")
+		cus["balance"] = req.PostFormValue("balance")
+		cus["discount"] = req.PostFormValue("discount")
 		cus["company_id"] = 1
 		cus["is_delete"] = 0
-
 		lastId, err := customerModel.Add(cus)
 		fmt.Println(lastId, err)
 	}

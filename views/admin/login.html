@@ -43,11 +43,12 @@
                 //监听提交
             form.on('submit(login)', function(data) {
                 $.post("/Admin/Login", data.field, function(result) {
-                    if (result) {
-                        location.href = "/Order/Add";
-                    } else {
-                        console.log("false");
-                    }
+                    console.log(result)
+                    // if (result) {
+                    //     location.href = "/Order/Add";
+                    // } else {
+                    //     console.log("false");
+                    // }
                 });
                 // return false;
             })
