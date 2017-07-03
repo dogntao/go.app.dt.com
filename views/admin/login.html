@@ -38,18 +38,18 @@
 </div>
 <script>
     require(['jquery', 'layui'], function($) {
-        layui.use(['form'], function() {
-            var form = layui.form()
-                //监听提交
+        layui.use(['form','layer'], function() {
+            var form = layui.form();
+            var layer = layui.layer;
+            //监听提交
             form.on('submit(login)', function(data) {
                 $.post("/Admin/Login", data.field, function(result) {
-                    console.log(result)
-                    // if (result) {
-                    //     location.href = "/Order/Add";
-                    // } else {
-                    //     console.log("false");
-                    // }
-                });
+                    if (result.Code == 200) {
+                        location.href = "/Order/Add";
+                    } else {
+                        layer.msg(result.Message)
+                    }
+                },"json");
                 // return false;
             })
         });

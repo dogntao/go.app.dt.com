@@ -1,7 +1,11 @@
 package controllers
 
-import "go.app.dt.com/models"
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+
+	"go.app.dt.com/models"
+)
 
 type addCustomer struct {
 	name       string
@@ -31,8 +35,18 @@ func (c *CustomerController) Add() {
 		cus["discount"] = req.PostFormValue("discount")
 		cus["company_id"] = 1
 		cus["is_delete"] = 0
-		lastId, err := customerModel.Add(cus)
-		fmt.Println(lastId, err)
+		lastID, err := customerModel.Add(cus)
+
+		jr := &jsonResult{}
+		if err != nil {
+			jr.Code = 201
+			jr.Message = "添加客户失败"
+		} else {
+			jr.Code = 200
+			jr.Message = string(lastID)
+		}
+		r, _ := json.Marshal(jr)
+		fmt.Fprintln(rep, string(r))
 	}
 }
 

@@ -11,6 +11,11 @@ import (
 type BaseController struct {
 }
 
+type jsonResult struct {
+	Code    int64
+	Message string
+}
+
 var assign = make(map[string]interface{})
 
 // 根据路径获取文件名(不带后缀)

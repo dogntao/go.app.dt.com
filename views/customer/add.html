@@ -44,17 +44,17 @@
 </div>
 <script>
     require(['jquery', 'layui'], function($) {
-        layui.use(['form'], function() {
+        layui.use(['form','layer'], function() {
             var form = layui.form();
+            var layer = layui.layer;
             form.on('submit(customerAdd)', function(data) {
                 $.post("/Customer/add", data.field, function(result) {
-                    // if (result) {
-                    //     location.href = "/Order/Add";
-                    // } else {
-                    //     console.log("false");
-                    // }
-                });
-                // return false;
+                    if (result.Code == 200) {
+                        location.href = "/Customer/Manage";
+                    } else {
+                        layer.msg(result.Message)
+                    }
+                },"json")
             })
         });
     })
