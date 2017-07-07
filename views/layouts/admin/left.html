@@ -1,27 +1,28 @@
-{{define "left"}} {{template "header"}}
+{{define "left"}} {{template "header" .}}
 <ul style="margin-top:58px" class="layui-nav layui-nav-tree layui-nav-side">
-    <li class="layui-nav-item">
+    <li class="layui-nav-item" :class="{'layui-nav-itemed':con=='Order'}">
         <a href="javascript:;"><i class="layui-icon">&#xe63c;</i> 订单</a>
         <dl class="layui-nav-child">
-            <dd>
+            <dd :class="{'layui-this':act=='Add'}">
                 <a href="javascript:;"><i class="layui-icon">&#xe654;</i> 新增订单</a>
             </dd>
-            <dd>
+            <dd :class="{'layui-this':act=='Manage'}">
                 <a href="javascript:;"><i class="layui-icon">&#xe60a;</i> 订单列表</a>
             </dd>
         </dl>
     </li>
-    <li class="layui-nav-item layui-nav-itemed">
+    <li class="layui-nav-item" :class="{'layui-nav-itemed':con=='Customer'}">
         <a href="javascript:;"><i class="layui-icon">&#xe613;</i> 客户</a>
         <dl class="layui-nav-child ">
-            <dd class="layui-this">
+            <dd :class="{'layui-this':act=='Add'}">
                 <a href="/Customer/Add"><i class="layui-icon">&#xe654;</i> 新增客户</a>
             </dd>
-            <dd>
+            <dd :class="{'layui-this':act=='Manage'}">
                 <a href="/Customer/Manage"><i class="layui-icon">&#xe60a;</i> 客户管理</a>
             </dd>
         </dl>
     </li>
 </ul>
+
 <div id="right" style="margin-left:200px; padding:20px">
     {{end}}

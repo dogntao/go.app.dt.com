@@ -30,7 +30,9 @@ func getFileName(filePath string) string {
 func (b *BaseController) DisplayAdmin(page string) {
 	tem, _ := template.ParseFiles(page, "views/layouts/admin/left.html", "views/layouts/admin/header.html", "views/layouts/admin/footer.html")
 	pageName := getFileName(page)
-	tem.ExecuteTemplate(rep, pageName, "")
+	assign["Con"] = con
+	assign["Act"] = act
+	tem.ExecuteTemplate(rep, pageName, assign)
 }
 
 // 显示前台页面

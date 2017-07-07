@@ -13,11 +13,21 @@
     <link rel="stylesheet" href="/js/components/layui/css/layui.css">
     <link rel="stylesheet" href="/css/layout_admin.css">
     <script>
-        layui.use(['element'], function() {});
+        require(['jquery', 'vue'], function ($, Vue) {
+            layui.use(['element'], function () { });
+
+            new Vue({
+                el: '#body',
+                data: {
+                    con: '{{.Con}}',
+                    act: '{{.Act}}'
+                },
+            })
+        })
     </script>
 </head>
 
-<body>
+<body id="body">
     <div class="header" lay-filter="">
         <div class="top_left" class="layui-nav-item">
             <div class="logo">任阳持久美妆</div>
