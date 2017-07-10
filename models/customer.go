@@ -1,6 +1,11 @@
 package models
 
+import (
+	"fmt"
+)
+
 type Customer struct {
+	name string
 }
 
 var cusTable = "cms_customer"
@@ -18,6 +23,12 @@ func (c *Customer) Update(upData map[string]interface{}, conStr string) (affRow 
 }
 
 // 列表
-// func (c *Customer)  {
-
-// }
+func (c *Customer) Manage(name string) {
+	var customer Customer
+	con := "id>50 limit 0,50"
+	err := Dtsql.Query(customer, cusTable, con, nil)
+	checkErr(err)
+	err = Dtsql.FetchAll()
+	checkErr(err)
+	fmt.Println(Dtsql.RetRows)
+}

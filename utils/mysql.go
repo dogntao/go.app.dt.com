@@ -58,19 +58,34 @@ func checkErr(err error) {
 // query
 func (mysql *Mysql) Query(field interface{}, table, con string, bind ...interface{}) (err error) {
 	// 拼装查询字段
+	// SELECT FIELD FROM TABLE WHERE CONDITION
 	t := reflect.TypeOf(field)
 	filedArr := make([]string, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
-		filedArr[i] = t.Field(i).Name
+		// 处理count
+		if t.Field(i).Name == "count" {
+			filedArr[i] = "count(*) as count"
+		} else {
+			filedArr[i] = t.Field(i).Name
+		}
 	}
 	fieldString := strings.Join(filedArr, ",")
 
 	// 获取链接
 	db := mysql.GetConn()
 	defer mysql.RetConn(db)
-	selSql := fmt.Sprintf("SELECT %s FROM %s WHERE %s", fieldString, table, con)
+	selSql := fmt.Sprintf("SELECT %s FROM %s", fieldString, table)
+	if con != "" {
+		selSql = fmt.Sprintf("%s WHERE %s", selSql, con)
+	}
 	stmt, err := db.Prepare(selSql)
-	mysql.rows, err = stmt.Query(bind...)
+	if bind[0] != nil {
+		fmt.Println("bind is not nil")
+		mysql.rows, err = stmt.Query(bind...)
+	} else {
+		fmt.Println("bind is nil")
+		mysql.rows, err = stmt.Query()
+	}
 	return
 }
 
@@ -102,7 +117,7 @@ func (mysql *Mysql) FetchRow() (err error) {
 }
 
 // fetchAll(获取所有返回值)
-func (mysql *Mysql) FetchAll(tableName string) (err error) {
+func (mysql *Mysql) FetchAll() (err error) {
 	for {
 		err = mysql.FetchRow()
 		if err == io.EOF {

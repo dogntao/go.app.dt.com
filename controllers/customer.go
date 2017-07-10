@@ -68,6 +68,7 @@ func (c *CustomerController) Update() {
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
 		c.DisplayAdmin("views/customer/manage.html")
+		customerModel.Manage("董涛")
 	} else {
 	}
 }
