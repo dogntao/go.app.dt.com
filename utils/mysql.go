@@ -56,7 +56,7 @@ func checkErr(err error) {
 }
 
 // query
-func (mysql *Mysql) Query(field interface{}, table, con string, bind ...interface{}) (err error) {
+func (mysql *Mysql) Query(field interface{}, table, con string, bind []string) (err error) {
 	// 拼装查询字段
 	// SELECT FIELD FROM TABLE WHERE CONDITION
 	t := reflect.TypeOf(field)
@@ -74,14 +74,21 @@ func (mysql *Mysql) Query(field interface{}, table, con string, bind ...interfac
 	// 获取链接
 	db := mysql.GetConn()
 	defer mysql.RetConn(db)
+	// 处理无condition
 	selSql := fmt.Sprintf("SELECT %s FROM %s", fieldString, table)
 	if con != "" {
 		selSql = fmt.Sprintf("%s WHERE %s", selSql, con)
 	}
 	stmt, err := db.Prepare(selSql)
-	if bind[0] != nil {
+	// 处理无绑定
+	if bind[0] != "" {
 		fmt.Println("bind is not nil")
-		mysql.rows, err = stmt.Query(bind...)
+		bindArr := make([]interface{}, 0)
+		for _, val := range bind {
+			bindArr = append(bindArr, val)
+		}
+		fmt.Println(bindArr)
+		mysql.rows, err = stmt.Query(bindArr...)
 	} else {
 		fmt.Println("bind is nil")
 		mysql.rows, err = stmt.Query()
@@ -151,6 +158,7 @@ func (mysql *Mysql) Insert(tableName string, data map[string]interface{}) (lastI
 	valStr := strings.Join(valArr, ",")
 
 	sql := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s)", tableName, keyStr, valStr)
+	fmt.Println(bindArr)
 	result, err := db.Exec(sql, bindArr...)
 	if err == nil {
 		lastId, _ = result.LastInsertId()

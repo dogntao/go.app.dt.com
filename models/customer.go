@@ -5,7 +5,7 @@ import (
 )
 
 type Customer struct {
-	name string
+	count string
 }
 
 var cusTable = "cms_customer"
@@ -23,10 +23,20 @@ func (c *Customer) Update(upData map[string]interface{}, conStr string) (affRow 
 }
 
 // 列表
-func (c *Customer) Manage(name string) {
+func (c *Customer) Manage(seaStr string) {
 	var customer Customer
-	con := "id>50 limit 0,50"
-	err := Dtsql.Query(customer, cusTable, con, nil)
+	con := ""
+	bind := []string{}
+	if seaStr != "" {
+		con = "(id=? OR name=? OR mobile=? OR address=?)"
+		for i := 0; i < 4; i++ {
+			bind = append(bind, seaStr)
+		}
+	} else {
+		bind = append(bind, "")
+	}
+	fmt.Println(bind)
+	err := Dtsql.Query(customer, cusTable, con, bind)
 	checkErr(err)
 	err = Dtsql.FetchAll()
 	checkErr(err)
