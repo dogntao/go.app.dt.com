@@ -1,5 +1,7 @@
 {{define "manage"}} {{template "left" .}}
-<div id="order_manage">
+<div id="cus_manage">
+    <!-- ${con} -->
+    ${list}
     <table class="layui-table">
         <colgroup>
             <col width="150">
@@ -8,30 +10,29 @@
         </colgroup>
         <thead>
             <tr>
-            <th>昵称</th>
-            <th>加入时间</th>
-            <th>签名</th>
+                <th>昵称</th>
+                <!-- <th>加入时间</th>
+                <th>签名</th> -->
             </tr> 
         </thead>
         <tbody>
-            <tr>
-            <td>贤心</td>
-            <td>2016-11-29</td>
-            <td>人生就像是一场修行</td>
-            </tr>
-            <tr>
-            <td>贤心</td>
-            <td>2016-11-29</td>
-            <td>人生就像是一场修行</td>
-            </tr>
+           <!-- <tr v-for="item in list"> -->
+               <!-- <td>${item}</td> -->
+               <!-- <td>${item}</td>
+               <td>${item}</td> -->
+            <!-- </tr>  -->
         </tbody>
     </table>
 </div>
 <script>
-    require(['jquery'], function($) {
-        // layui.use(['form'], function() {
-        //     var form = layui.form()
-        // });
+    require(['jquery', 'vue'], function($,Vue) {
+        new Vue({
+            el: '#cus_manage',
+            data: {
+                total: '{{.Total}}',
+                list: '{{.List}}'
+            },
+        })
     })
 </script>
 {{template "footer"}} {{end}}

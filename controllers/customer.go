@@ -7,16 +7,6 @@ import (
 	"go.app.dt.com/models"
 )
 
-type addCustomer struct {
-	name       string
-	mobile     string
-	address    string
-	balance    string
-	discount   string
-	company_id int64
-	is_delete  int64
-}
-
 var customerModel = &models.Customer{}
 
 type CustomerController struct {
@@ -67,8 +57,11 @@ func (c *CustomerController) Update() {
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
+
+		total, list := customerModel.Manage("董涛", 1, 1)
+		assign["Total"] = total
+		assign["List"] = list
 		c.DisplayAdmin("views/customer/manage.html")
-		customerModel.Manage("董涛")
 	} else {
 	}
 }

@@ -2,10 +2,24 @@ package models
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type Customer struct {
+}
+
+type customerCount struct {
 	count string
+}
+
+type customerInfo struct {
+	name       string
+	mobile     string
+	address    string
+	balance    string
+	discount   string
+	company_id int64
+	is_delete  int64
 }
 
 var cusTable = "cms_customer"
@@ -22,9 +36,8 @@ func (c *Customer) Update(upData map[string]interface{}, conStr string) (affRow 
 	return
 }
 
-// 列表
-func (c *Customer) Manage(seaStr string) {
-	var customer Customer
+// 列表(返回总数和列表)
+func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, list []map[string]string) {
 	con := ""
 	bind := []string{}
 	if seaStr != "" {
@@ -35,10 +48,21 @@ func (c *Customer) Manage(seaStr string) {
 	} else {
 		bind = append(bind, "")
 	}
-	fmt.Println(bind)
-	err := Dtsql.Query(customer, cusTable, con, bind)
-	checkErr(err)
+	// 查询总数
+	var cusCount customerCount
+	err := Dtsql.Query(cusCount, cusTable, con, bind)
+	err = Dtsql.FetchRow()
+	total, _ = strconv.Atoi(Dtsql.RetMap["count"])
+
+	// 查询列表
+	var cusInfo customerInfo
+	con = con + " LIMIT ?,?"
+	bind = append(bind, fmt.Sprintf("%d", (pageIndex-1)*pageSize))
+	bind = append(bind, fmt.Sprintf("%d", pageSize))
+	err = Dtsql.Query(cusInfo, cusTable, con, bind)
 	err = Dtsql.FetchAll()
+	list = Dtsql.RetRows
+
 	checkErr(err)
-	fmt.Println(Dtsql.RetRows)
+	return
 }
