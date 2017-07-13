@@ -15,14 +15,13 @@
     <script>
         require(['jquery', 'vue'], function ($, Vue) {
             layui.use(['element'], function () { });
-
-        //    new Vue({
-        //         el: '#body',
-        //         data: {
-        //             con: '{{.Con}}',
-        //             act: '{{.Act}}',
-        //         },
-        //     })
+            new Vue({
+                el: '#left',
+                data: {
+                    con: '{{.Con}}',
+                    act: '{{.Act}}',
+                },
+            })
         })
     </script>
 </head>

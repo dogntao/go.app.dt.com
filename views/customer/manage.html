@@ -1,7 +1,5 @@
 {{define "manage"}} {{template "left" .}}
 <div id="cus_manage">
-    <!-- ${con} -->
-    ${list}
     <table class="layui-table">
         <colgroup>
             <col width="150">
@@ -10,27 +8,43 @@
         </colgroup>
         <thead>
             <tr>
-                <th>昵称</th>
-                <!-- <th>加入时间</th>
-                <th>签名</th> -->
+                <th>序号</th>
+                <th>姓名</th>
+                <th>手机</th>
+                <th>地址</th>
+                <th>余额</th>
+                <th>折扣</th>
             </tr> 
         </thead>
         <tbody>
-           <!-- <tr v-for="item in list"> -->
-               <!-- <td>${item}</td> -->
-               <!-- <td>${item}</td>
-               <td>${item}</td> -->
-            <!-- </tr>  -->
+            <tr v-for="item in list"> 
+                <td>${item.id}</td> 
+                <td>${item.name}</td> 
+                <td>${item.mobile}</td> 
+                <td>${item.address}</td> 
+                <td>${item.balance}</td> 
+                <td>${item.discount}</td> 
+             </tr>  
         </tbody>
     </table>
+    <div id="page"></div>
 </div>
 <script>
     require(['jquery', 'vue'], function($,Vue) {
+        layui.use(['laypage'], function () {
+            var laypage = layui.laypage
+            laypage({
+                cont: 'page',
+                pages: '{{.Total}}', //总页数
+                groups: 20 //连续显示分页数
+            });
+        });
+
         new Vue({
             el: '#cus_manage',
             data: {
                 total: '{{.Total}}',
-                list: '{{.List}}'
+                list: jQuery.parseJSON('{{.List}}')
             },
         })
     })

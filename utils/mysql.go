@@ -126,6 +126,8 @@ func (mysql *Mysql) FetchRow() (err error) {
 
 // fetchAll(获取所有返回值)
 func (mysql *Mysql) FetchAll() (err error) {
+	// 清空数据
+	mysql.RetRows = make([]map[string]string, 0)
 	for {
 		err = mysql.FetchRow()
 		if err == io.EOF {

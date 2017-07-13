@@ -13,6 +13,7 @@ type customerCount struct {
 }
 
 type customerInfo struct {
+	id         int64
 	name       string
 	mobile     string
 	address    string
@@ -41,7 +42,7 @@ func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, 
 	con := ""
 	bind := []string{}
 	if seaStr != "" {
-		con = "(id=? OR name=? OR mobile=? OR address=?)"
+		con = "(id like ? OR name like ? OR mobile like ? OR address like ?)"
 		for i := 0; i < 4; i++ {
 			bind = append(bind, seaStr)
 		}

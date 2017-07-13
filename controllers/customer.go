@@ -57,10 +57,11 @@ func (c *CustomerController) Update() {
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
-
-		total, list := customerModel.Manage("董涛", 1, 1)
+		total, list := customerModel.Manage("%董涛%", 1, 20)
+		listByte, _ := json.Marshal(list)
+		// fmt.Println(string(listByte))
 		assign["Total"] = total
-		assign["List"] = list
+		assign["List"] = string(listByte)
 		c.DisplayAdmin("views/customer/manage.html")
 	} else {
 	}
