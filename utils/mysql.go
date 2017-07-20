@@ -80,18 +80,18 @@ func (mysql *Mysql) Query(field interface{}, table, con string, bind []string) (
 		selSql = fmt.Sprintf("%s WHERE %s", selSql, con)
 	}
 	stmt, err := db.Prepare(selSql)
-	fmt.Println(selSql)
-	fmt.Println(bind)
+	// fmt.Println(selSql)
+	// fmt.Println(bind)
 	// 处理无绑定
-	if bind[0] != "" {
-		fmt.Println("bind is not nil")
+	if len(bind) > 0 {
+		// fmt.Println("bind is not nil")
 		bindArr := make([]interface{}, 0)
 		for _, val := range bind {
 			bindArr = append(bindArr, val)
 		}
 		mysql.rows, err = stmt.Query(bindArr...)
 	} else {
-		fmt.Println("bind is nil")
+		// fmt.Println("bind is nil")
 		mysql.rows, err = stmt.Query()
 	}
 	return

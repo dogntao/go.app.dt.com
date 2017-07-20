@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"math"
+
 	"go.app.dt.com/models"
 )
 
@@ -57,11 +59,13 @@ func (c *CustomerController) Update() {
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
-		total, list := customerModel.Manage("%董涛%", 1, 20)
+		search := paramMap["search"]
+		total, list := customerModel.Manage(search, 1, 20)
 		listByte, _ := json.Marshal(list)
 		// fmt.Println(string(listByte))
-		assign["Total"] = total
+		assign["Total"] = math.Ceil(float64(total) / 20)
 		assign["List"] = string(listByte)
+		assign["SearchText"] = search
 		c.DisplayAdmin("views/customer/manage.html")
 	} else {
 	}

@@ -44,10 +44,11 @@ func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, 
 	if seaStr != "" {
 		con = "(id like ? OR name like ? OR mobile like ? OR address like ?)"
 		for i := 0; i < 4; i++ {
+			seaStr = "%" + seaStr + "%"
 			bind = append(bind, seaStr)
 		}
 	} else {
-		bind = append(bind, "")
+		// bind = append(bind, "")
 	}
 	// 查询总数
 	var cusCount customerCount
@@ -57,6 +58,9 @@ func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, 
 
 	// 查询列表
 	var cusInfo customerInfo
+	if con == "" {
+		con = "1=1"
+	}
 	con = con + " LIMIT ?,?"
 	bind = append(bind, fmt.Sprintf("%d", (pageIndex-1)*pageSize))
 	bind = append(bind, fmt.Sprintf("%d", pageSize))

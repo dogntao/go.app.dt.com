@@ -11,8 +11,6 @@ import (
 	"database/sql"
 
 	"go.app.dt.com/conf"
-
-	"fmt"
 )
 
 // mysql连接池
@@ -32,8 +30,8 @@ func (d *DbStore) New() {
 
 // 获取连接池
 func (d *DbStore) GetConn() (db *sql.DB) {
-	fmt.Println("d.pool:")
-	fmt.Println(d.pool)
+	// fmt.Println("d.pool:")
+	// fmt.Println(d.pool)
 	if d.pool == nil {
 		d.New()
 	}

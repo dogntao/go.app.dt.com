@@ -1,11 +1,22 @@
 {{define "manage"}} {{template "left" .}}
 <div id="cus_manage">
+    <div style="width:400px; float:left; margin-bottom:10px">
+        <input type="text" name="title" 
+            required lay-verify="required" 
+            placeholder="请输入id/姓名/手机/地址" 
+            autocomplete="off" 
+            class="layui-input"
+            style="width:300px;float:left"
+            v-model="searchText"
+        > 
+        <button class="layui-btn" style="float:left" @click="search()">查找</button>
+    </div>
     <table class="layui-table">
-        <colgroup>
+        <!-- <colgroup>
             <col width="150">
             <col width="200">
             <col>
-        </colgroup>
+        </colgroup> -->
         <thead>
             <tr>
                 <th>序号</th>
@@ -44,8 +55,14 @@
             el: '#cus_manage',
             data: {
                 total: '{{.Total}}',
-                list: jQuery.parseJSON('{{.List}}')
+                list: jQuery.parseJSON('{{.List}}'),
+                searchText: '{{.SearchText}}',
             },
+            methods:{
+                search:function(){
+                    location.href="/Customer/Manage?search="+this.searchText
+                }
+            }
         })
     })
 </script>
