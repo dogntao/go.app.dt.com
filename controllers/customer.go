@@ -6,6 +6,8 @@ import (
 
 	"math"
 
+	"strconv"
+
 	"go.app.dt.com/models"
 )
 
@@ -59,13 +61,23 @@ func (c *CustomerController) Update() {
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
+		// 搜索数据
 		search := paramMap["search"]
-		total, list := customerModel.Manage(search, 1, 20)
+		// 处理分页
+		var page int64
+		page = 1
+		getPage, ok := paramMap["page"]
+		if ok {
+			page, _ = strconv.ParseInt(getPage, 10, 64)
+		}
+
+		total, list := customerModel.Manage(search, page, 10)
 		listByte, _ := json.Marshal(list)
-		// fmt.Println(string(listByte))
-		assign["Total"] = math.Ceil(float64(total) / 20)
+		// 传递参数
+		assign["Total"] = math.Ceil(float64(total) / 10)
 		assign["List"] = string(listByte)
-		assign["SearchText"] = search
+		assign["Search"] = search
+		assign["Page"] = page
 		c.DisplayAdmin("views/customer/manage.html")
 	} else {
 	}

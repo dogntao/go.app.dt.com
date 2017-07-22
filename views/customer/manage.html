@@ -47,16 +47,25 @@
             laypage({
                 cont: 'page',
                 pages: '{{.Total}}', //总页数
-                groups: 20 //连续显示分页数
+                skip:true,
+                groups: 8, //连续显示分页数
+                curr:'{{.Page}}',
+                jump:function(obj,first){
+                    // console.log(obj);
+                    // console.log(first);
+                    if(first != true){
+                        var search = '{{.SearchText}}';
+                        location.href="/Customer/Manage?search="+search+"&page="+obj.curr;
+                    }
+                }
             });
         });
-
         new Vue({
             el: '#cus_manage',
             data: {
                 total: '{{.Total}}',
                 list: jQuery.parseJSON('{{.List}}'),
-                searchText: '{{.SearchText}}',
+                searchText: '{{.Search}}',
             },
             methods:{
                 search:function(){
