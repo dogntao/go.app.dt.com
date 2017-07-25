@@ -3,9 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-
 	"math"
-
 	"strconv"
 
 	"go.app.dt.com/models"

@@ -60,16 +60,16 @@ func (mysql *Mysql) Query(field interface{}, table, con string, bind []string) (
 	// 拼装查询字段
 	// SELECT FIELD FROM TABLE WHERE CONDITION
 	t := reflect.TypeOf(field)
-	filedArr := make([]string, t.NumField())
+	fieldArr := make([]string, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
 		// 处理count
 		if t.Field(i).Name == "count" {
-			filedArr[i] = "count(*) as count"
+			fieldArr[i] = "count(*) as count"
 		} else {
-			filedArr[i] = t.Field(i).Name
+			fieldArr[i] = t.Field(i).Name
 		}
 	}
-	fieldString := strings.Join(filedArr, ",")
+	fieldString := strings.Join(fieldArr, ",")
 
 	// 获取链接
 	db := mysql.GetConn()
@@ -190,4 +190,50 @@ func (mysql *Mysql) Update(tableName string, upData map[string]interface{}, conS
 		affRow, _ = result.RowsAffected()
 	}
 	return
+}
+
+// updateMulti(批量更新数据)
+func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, id string) {
+	/*
+		UPDATE TABLE SET
+			field1 = CASE
+				WHEN id=1 THEN "field1_value1"
+				WHEN id=2 THEN "field1_value2"
+			END,
+			field2 = CASE
+				WHEN id=1 THEN "field2_value1"
+				WHEN id=2 THEN "field2_value2"
+			END
+		WHERE id in(1,2)
+	*/
+
+	idArr := []string{}
+	fieldStr := ""
+	fieldArr := []string{}
+	bindArr := make([]interface{}, 0)
+
+	// 拼装field map
+	fieldMap := make(map[string][]string)
+	for _, value := range upDatas {
+		for k, v := range value {
+			if k == id {
+				idArr = append(idArr, k)
+			} else {
+				// str := fmt.Sprintf("WHEN %s=%s THEN %s", id, value[id], v)
+				str := "WHEN " + id + "=?  THEN ?"
+				bindArr = append(bindArr, value[id])
+				bindArr = append(bindArr, v)
+				fieldMap[k] = append(fieldMap[k], str)
+			}
+		}
+	}
+	// 合并fied map
+	for k, v := range fieldMap {
+		fieldStr = k + "=" + " CASE " + strings.Join(v, " ") + " END"
+		fieldArr = append(fieldArr, fieldStr)
+	}
+
+	fielde := strings.Join(fieldArr, ",")
+	fmt.Println(fielde)
+	// $sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s",tableName,)
 }

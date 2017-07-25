@@ -25,6 +25,7 @@
                 <th>地址</th>
                 <th>余额</th>
                 <th>折扣</th>
+                <th>操作</th>
             </tr> 
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
                 <td>${item.address}</td> 
                 <td>${item.balance}</td> 
                 <td>${item.discount}</td> 
+                <td>编辑</td> 
              </tr>  
         </tbody>
     </table>
@@ -68,9 +70,11 @@
                 searchText: '{{.Search}}',
             },
             methods:{
+                // 搜索
                 search:function(){
                     location.href="/Customer/Manage?search="+this.searchText
-                }
+                },
+                // 编辑
             }
         })
     })
