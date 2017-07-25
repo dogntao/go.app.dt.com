@@ -193,7 +193,7 @@ func (mysql *Mysql) Update(tableName string, upData map[string]interface{}, conS
 }
 
 // updateMulti(批量更新数据)
-func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, id string) {
+func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, id string) (affRow int64, err error) {
 	/*
 		UPDATE TABLE SET
 			field1 = CASE
@@ -206,6 +206,9 @@ func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, i
 			END
 		WHERE id in(1,2)
 	*/
+	// 获取链接
+	db := mysql.GetConn()
+	defer mysql.RetConn(db)
 
 	idArr := []string{}
 	fieldStr := ""
@@ -214,26 +217,40 @@ func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, i
 
 	// 拼装field map
 	fieldMap := make(map[string][]string)
+	bindMap := make(map[string][]string)
 	for _, value := range upDatas {
 		for k, v := range value {
 			if k == id {
-				idArr = append(idArr, k)
+				idArr = append(idArr, v)
 			} else {
-				// str := fmt.Sprintf("WHEN %s=%s THEN %s", id, value[id], v)
+				// str := fmt.Sprintf("WHEN %s=%s THEN '%s'", id, value[id], v)
 				str := "WHEN " + id + "=?  THEN ?"
-				bindArr = append(bindArr, value[id])
-				bindArr = append(bindArr, v)
 				fieldMap[k] = append(fieldMap[k], str)
+				// 生成绑定
+				bindMap[k] = append(bindMap[k], value[id])
+				bindMap[k] = append(bindMap[k], v)
 			}
 		}
 	}
-	// 合并fied map
+	// 合并field map
 	for k, v := range fieldMap {
 		fieldStr = k + "=" + " CASE " + strings.Join(v, " ") + " END"
 		fieldArr = append(fieldArr, fieldStr)
+		// 处理绑定
+		for _, b_v := range bindMap[k] {
+			bindArr = append(bindArr, b_v)
+		}
 	}
 
-	fielde := strings.Join(fieldArr, ",")
-	fmt.Println(fielde)
-	// $sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s",tableName,)
+	fields := strings.Join(fieldArr, ",")
+	con := id + " IN(" + strings.Join(idArr, ",") + ")"
+	// fmt.Println(fields)
+	// fmt.Println(bindArr)
+	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s", tableName, fields, con)
+	fmt.Println(sql)
+	result, err := db.Exec(sql, bindArr...)
+	if err == nil {
+		affRow, _ = result.RowsAffected()
+	}
+	return
 }

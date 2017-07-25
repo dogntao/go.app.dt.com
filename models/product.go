@@ -1,9 +1,13 @@
 package models
 
+import (
+	"fmt"
+)
+
 type Product struct {
 }
 
-var productTable = "cms_product"
+var productTable = "test"
 
 // 批量更新
 func (p *Product) UpdateProducts() {
@@ -11,16 +15,17 @@ func (p *Product) UpdateProducts() {
 	data := make(map[string]string)
 
 	data["id"] = "1"
-	data["name"] = "name_1"
-	data["title"] = "title_1"
+	data["name"] = "name1"
+	data["title"] = "title1"
 	upDatas[0] = data
 
 	data = make(map[string]string)
 	data["id"] = "2"
-	data["name"] = "name_2"
-	data["title"] = "title_2"
+	data["name"] = "name2"
+	data["title"] = "title2"
 	upDatas[1] = data
 
-	Dtsql.UpdateMulti(productTable, upDatas, "id")
+	affRow, err := Dtsql.UpdateMulti(productTable, upDatas, "id")
+	fmt.Println(affRow, err)
 	return
 }
