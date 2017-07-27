@@ -12,7 +12,7 @@ type customerCount struct {
 	count string
 }
 
-type customerInfo struct {
+type CustomerInfo struct {
 	id         int64
 	name       string
 	mobile     string
@@ -24,6 +24,18 @@ type customerInfo struct {
 }
 
 var cusTable = "cms_customer"
+
+// 查询详情
+func (c *Customer) Info(id string) (info map[string]string) {
+	var customerInfo CustomerInfo
+	con := "id=?"
+	bind := []string{id}
+	err := Dtsql.Query(customerInfo, cusTable, con, bind)
+	err = Dtsql.FetchRow()
+	checkErr(err)
+	info = Dtsql.RetMap
+	return
+}
 
 // 新增
 func (c *Customer) Add(data map[string]interface{}) (lastId int64, err error) {
@@ -57,7 +69,7 @@ func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, 
 	total, _ = strconv.Atoi(Dtsql.RetMap["count"])
 
 	// 查询列表
-	var cusInfo customerInfo
+	var cusInfo CustomerInfo
 	if con == "" {
 		con = "1=1"
 	}

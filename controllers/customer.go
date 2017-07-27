@@ -17,6 +17,14 @@ type CustomerController struct {
 
 func (c *CustomerController) Add() {
 	if req.Method == "GET" {
+		// 获取id参数编辑
+		id, ok := paramMap["id"]
+		customerInfoMap := make(map[string]string, 0)
+		if ok {
+			customerInfoMap = customerModel.Info(id)
+		}
+		customerInfo, _ := json.Marshal(customerInfoMap)
+		assign["Info"] = string(customerInfo)
 		c.DisplayAdmin("views/customer/add.html")
 	} else {
 		cus := make(map[string]interface{}, 0)

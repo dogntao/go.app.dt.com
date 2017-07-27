@@ -7,31 +7,31 @@
         <div class="layui-form-item">
             <label class="layui-form-label">姓名</label>
             <div class="layui-input-block">
-                <input type="text" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                <input type="text" name="name" v-model="info.name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">手机</label>
             <div class="layui-input-block">
-                <input type="text" name="mobile" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+                <input type="text" name="mobile" v-model="info.mobile" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">地址</label>
             <div class="layui-input-block">
-            <textarea name="address" placeholder="请输入地址" class="layui-textarea"></textarea>
+            <textarea name="address" v-model="info.address" placeholder="请输入地址" class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">余额</label>
             <div class="layui-input-block">
-                <input type="text" name="balance" placeholder="请输入余额" autocomplete="off" class="layui-input">
+                <input type="text" name="balance" v-model="info.balance" placeholder="请输入余额" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">折扣</label>
             <div class="layui-input-block">
-                <input type="text" name="discount" value="100" placeholder="请输入折扣" autocomplete="off" class="layui-input">
+                <input type="text" name="discount" v-model="info.discount" value="100" placeholder="请输入折扣" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -43,7 +43,7 @@
     </div>
 </div>
 <script>
-    require(['jquery', 'layui'], function($) {
+    require(['jquery', 'vue', 'layui'], function($,Vue) {
         layui.use(['form','layer'], function() {
             var form = layui.form();
             var layer = layui.layer;
@@ -57,6 +57,19 @@
                 },"json")
             })
         });
+        new Vue({
+            el: '#add_order',
+            data: {
+                info: jQuery.parseJSON('{{.Info}}'),
+            },
+            methods:{
+                // 搜索
+                search:function(){
+                    location.href="/Customer/Manage?search="+this.searchText
+                },
+                // 编辑
+            }
+        })
     })
 </script>
 {{template "footer"}} {{end}}
