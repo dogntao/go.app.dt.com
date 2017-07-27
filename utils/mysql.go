@@ -161,7 +161,49 @@ func (mysql *Mysql) Insert(tableName string, data map[string]interface{}) (lastI
 	valStr := strings.Join(valArr, ",")
 
 	sql := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s)", tableName, keyStr, valStr)
-	fmt.Println(bindArr)
+	result, err := db.Exec(sql, bindArr...)
+	if err == nil {
+		lastId, _ = result.LastInsertId()
+	}
+	return
+}
+
+// InsertMulti(批量插入数据)
+func (mysql *Mysql) InsertMulti(tableName string, data []map[string]string) (lastId int64, err error) {
+	// INSERT INTO TABLE(keyArr) VALUES (?,?,...),(?,?,...),(?,?,...)
+	// 获取链接
+	db := mysql.GetConn()
+	defer mysql.RetConn(db)
+
+	// 根据data拼出key和value以及bind
+	keyArr := []string{}
+	valArr := []string{}
+	perValstr := ""
+	perValArr := []string{}
+	bindArr := make([]interface{}, 0)
+
+	for key, val := range data {
+		perValstr = ""
+		perValArr = []string{}
+
+		if len(val) > 0 {
+			for k, v := range val {
+				// 生成key
+				if key == 0 {
+					keyArr = append(keyArr, k)
+				}
+				perValArr = append(perValArr, "?")
+				bindArr = append(bindArr, v)
+			}
+			// 生成每个value
+			perValstr = "(" + strings.Join(perValArr, ",") + ")"
+			valArr = append(valArr, perValstr)
+		}
+	}
+
+	keyStr := strings.Join(keyArr, ",")
+	valStr := strings.Join(valArr, ",")
+	sql := fmt.Sprintf("INSERT INTO %s(%s) VALUES %s", tableName, keyStr, valStr)
 	result, err := db.Exec(sql, bindArr...)
 	if err == nil {
 		lastId, _ = result.LastInsertId()
