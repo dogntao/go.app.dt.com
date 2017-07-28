@@ -22,6 +22,17 @@
             </dd>
         </dl>
     </li>
+    <li class="layui-nav-item" :class="{'layui-nav-itemed':con=='Product'}">
+        <a href="javascript:;"><i class="layui-icon">&#xe613;</i> 产品</a>
+        <dl class="layui-nav-child ">
+            <dd :class="{'layui-this':act=='Add'}">
+                <a href="/Product/Add"><i class="layui-icon">&#xe654;</i> 新增产品</a>
+            </dd>
+            <dd :class="{'layui-this':act=='List'}">
+                <a href="/Product/List"><i class="layui-icon">&#xe60a;</i> 产品管理</a>
+            </dd>
+        </dl>
+    </li>
 </ul>
 
 <div id="right" style="margin-left:200px; padding:20px">

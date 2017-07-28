@@ -48,7 +48,7 @@
             var form = layui.form();
             var layer = layui.layer;
             form.on('submit(customerAdd)', function(data) {
-                $.post("/Customer/add", data.field, function(result) {
+                $.post("/Customer/add?id={{.Id}}", data.field, function(result) {
                     if (result.Code == 200) {
                         location.href = "/Customer/Manage";
                     } else {

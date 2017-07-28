@@ -1,0 +1,59 @@
+{{define "list"}} {{template "left" .}}
+<div id="product_list">
+    <div method="POST" class="layui-form" action="">
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>产品</th>
+                    <th>价格</th>
+                    <th>库存</th>
+                    <th>进货</th>
+                </tr> 
+            </thead>
+            <tbody>
+                <tr v-for="item in list"> 
+                    <td>${item.id}</td> 
+                    <td><input type="text" class="layui-input" name="product_name[${item.id}]" v-model="item.product_name"></td> 
+                    <td><input type="text" class="layui-input" name="price[${item.id}]" v-model="item.price"></td> 
+                    <td><input type="text" class="layui-input" name="count[${item.id}]" v-model="item.count"></td> 
+                    <td><input type="text" class="layui-input" name="purcase[${item.id}]" v-model="item.purcase"></td> 
+                </tr>  
+            </tbody>
+        </table>
+        <button class="layui-btn" lay-submit lay-filter="productUp">立即修改</button>
+    </div>
+</div>
+<script>
+    require(['jquery', 'vue', 'layui'], function($,Vue) {
+        ProductListVue =  new Vue({
+            el: '#product_list',
+            data: {
+                list: jQuery.parseJSON('{{.List}}'),
+            },
+            methods:{
+                // 搜索
+                search:function(){
+                    location.href="/Customer/Manage?search="+this.searchText
+                },
+                // 编辑
+            }
+        });
+        layui.use(['form','layer'], function() {
+            var form = layui.form();
+            var layer = layui.layer;
+            form.on('submit(productUp)', function(data) {
+                var datas = {};
+                datas.list = JSON.stringify(ProductListVue.list);
+                $.post("/Product/Update", datas, function(result) {
+                    if (result.Code == 200) {
+                        location.href = "/Product/List";
+                    } else {
+                        layer.msg(result.Message)
+                    }
+                },"json")
+            })
+        });
+    })
+</script>
+{{template "footer"}} {{end}}

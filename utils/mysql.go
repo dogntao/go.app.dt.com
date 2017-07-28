@@ -63,8 +63,8 @@ func (mysql *Mysql) Query(field interface{}, table, con string, bind []string) (
 	fieldArr := make([]string, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
 		// 处理count
-		if t.Field(i).Name == "count" {
-			fieldArr[i] = "count(*) as count"
+		if t.Field(i).Name == "queryCount" {
+			fieldArr[i] = "count(*) as queryCount"
 		} else {
 			fieldArr[i] = t.Field(i).Name
 		}
@@ -212,7 +212,7 @@ func (mysql *Mysql) InsertMulti(tableName string, data []map[string]string) (las
 }
 
 // update(更新数据)
-func (mysql *Mysql) Update(tableName string, upData map[string]interface{}, conStr string) (affRow int64, err error) {
+func (mysql *Mysql) Update(tableName string, upData map[string]interface{}, con string, bind []string) (affRow int64, err error) {
 	// UPDATE TABLE SET keyStr WHERE conStr
 	// 获取链接
 	db := mysql.GetConn()
@@ -225,8 +225,11 @@ func (mysql *Mysql) Update(tableName string, upData map[string]interface{}, conS
 		bindArr = append(bindArr, val)
 	}
 	keyStr := strings.Join(keyArr, ",")
+	for _, val := range bind {
+		bindArr = append(bindArr, val)
+	}
 
-	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s", tableName, keyStr, conStr)
+	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s", tableName, keyStr, con)
 	result, err := db.Exec(sql, bindArr...)
 	if err == nil {
 		affRow, _ = result.RowsAffected()

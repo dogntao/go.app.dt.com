@@ -9,7 +9,7 @@ type Customer struct {
 }
 
 type customerCount struct {
-	count string
+	queryCount string
 }
 
 type CustomerInfo struct {
@@ -44,8 +44,10 @@ func (c *Customer) Add(data map[string]interface{}) (lastId int64, err error) {
 }
 
 // 更新
-func (c *Customer) Update(upData map[string]interface{}, conStr string) (affRow int64, err error) {
-	affRow, err = Dtsql.Update(cusTable, upData, conStr)
+func (c *Customer) Update(upData map[string]interface{}, id string) (affRow int64, err error) {
+	conStr := "id=?"
+	bind := []string{id}
+	affRow, err = Dtsql.Update(cusTable, upData, conStr, bind)
 	return
 }
 
@@ -66,7 +68,7 @@ func (c *Customer) Manage(seaStr string, pageIndex, pageSize int64) (total int, 
 	var cusCount customerCount
 	err := Dtsql.Query(cusCount, cusTable, con, bind)
 	err = Dtsql.FetchRow()
-	total, _ = strconv.Atoi(Dtsql.RetMap["count"])
+	total, _ = strconv.Atoi(Dtsql.RetMap["queryCount"])
 
 	// 查询列表
 	var cusInfo CustomerInfo
