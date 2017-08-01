@@ -1,0 +1,69 @@
+{{define "add"}} {{template "left" .}}
+<style type="text/css">
+
+</style>
+<div id="add_order">
+    <div method="POST" class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="product_name" required  lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">价格</label>
+            <div class="layui-input-block">
+                <input type="text" name="price" required  lay-verify="required" placeholder="请输入产品价格" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">库存</label>
+            <div class="layui-input-block">
+                <input name="count" placeholder="请输入产品库存" class="layui-input"></input>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="is_delete" lay-skin="switch" lay-text="上线|下线" value="1" checked>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="productAdd">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    require(['jquery', 'vue', 'layui'], function($,Vue) {
+        layui.use(['form','layer'], function() {
+            var form = layui.form();
+            var layer = layui.layer;
+            form.on('submit(productAdd)', function(data) {
+                $.post("/Product/Add", data.field, function(result) {
+                    if (result.Code == 200) {
+                        location.href = "/Product/List";
+                    } else {
+                        layer.msg(result.Message)
+                    }
+                },"json")
+            })
+        });
+        // new Vue({
+        //     el: '#add_order',
+        //     data: {
+        //         info: jQuery.parseJSON('{{.Info}}'),
+        //     },
+        //     methods:{
+        //         // 搜索
+        //         search:function(){
+        //             location.href="/Customer/Manage?search="+this.searchText
+        //         },
+        //         // 编辑
+        //     }
+        // })
+    })
+</script>
+{{template "footer"}} {{end}}

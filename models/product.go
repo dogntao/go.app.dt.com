@@ -10,10 +10,17 @@ type ProductInfo struct {
 	product_name string
 	price        float64
 	count        int64
+	is_delete    int64
 }
 
 var productTable = "cms_product"
 var purchaseTable = "cms_product_purchase"
+
+// 新增产品
+func (c *Product) Add(data map[string]interface{}) (lastId int64, err error) {
+	lastId, err = Dtsql.Insert(productTable, data)
+	return
+}
 
 // 产品列表
 func (p *Product) List() (list []map[string]string) {

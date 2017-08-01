@@ -25,8 +25,33 @@ type UpProductInfo struct {
 }
 
 // 产品
-func (p *ProductController) Index() {
-	p.Display("views/product/product.html")
+func (p *ProductController) Add() {
+	if req.Method == "GET" {
+		p.DisplayAdmin("views/product/add.html")
+	} else {
+		// 新增
+		pro := make(map[string]interface{}, 0)
+		pro["product_name"] = req.PostFormValue("product_name")
+		pro["price"] = req.PostFormValue("price")
+		pro["count"] = req.PostFormValue("count")
+		pro["is_delete"] = 1
+		if req.PostFormValue("is_delete") == "1" {
+			pro["is_delete"] = 0
+		}
+
+		res, err := productModel.Add(pro)
+		// 返回json值
+		jr := &jsonResult{}
+		if err != nil {
+			jr.Code = 201
+			jr.Message = "新增产品失败"
+		} else {
+			jr.Code = 200
+			jr.Message = string(res)
+		}
+		r, _ := json.Marshal(jr)
+		fmt.Fprintln(rep, string(r))
+	}
 }
 
 // 产品列表
