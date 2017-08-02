@@ -5,10 +5,11 @@
             <thead>
                 <tr>
                     <th>序号</th>
-                    <th>产品</th>
+                    <th>名称</th>
                     <th>价格</th>
                     <th>库存</th>
                     <th>进货</th>
+                    <th>操作</th>
                 </tr> 
             </thead>
             <tbody>
@@ -18,6 +19,14 @@
                     <td><input type="text" class="layui-input" name="price[${item.id}]" v-model="item.price"></td> 
                     <td><input type="text" class="layui-input" name="count[${item.id}]" v-model="item.count"></td> 
                     <td><input type="text" class="layui-input" name="purcase[${item.id}]" v-model="item.purcase"></td> 
+                    <td>
+                        <button 
+                            class="layui-btn layui-btn-small "
+                            :class="item.is_delete==0?'layui-btn-danger':''"
+                        >
+                            ${item.is_delete==0?'下线':'上线'}
+                        </button>
+                    </td> 
                 </tr>  
             </tbody>
         </table>

@@ -277,6 +277,7 @@ func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, i
 			}
 		}
 	}
+
 	// 合并field map
 	for k, v := range fieldMap {
 		fieldStr = k + "=" + " CASE " + strings.Join(v, " ") + " END"
@@ -289,10 +290,7 @@ func (mysql *Mysql) UpdateMulti(tableName string, upDatas []map[string]string, i
 
 	fields := strings.Join(fieldArr, ",")
 	con := id + " IN(" + strings.Join(idArr, ",") + ")"
-	// fmt.Println(fields)
-	// fmt.Println(bindArr)
 	sql := fmt.Sprintf("UPDATE %s SET %s WHERE %s", tableName, fields, con)
-	fmt.Println(sql)
 	result, err := db.Exec(sql, bindArr...)
 	if err == nil {
 		affRow, _ = result.RowsAffected()
