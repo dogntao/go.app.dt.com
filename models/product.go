@@ -17,7 +17,7 @@ var productTable = "cms_product"
 var purchaseTable = "cms_product_purchase"
 
 // 新增产品
-func (c *Product) Add(data map[string]interface{}) (lastId int64, err error) {
+func (p *Product) Add(data map[string]interface{}) (lastId int64, err error) {
 	lastId, err = Dtsql.Insert(productTable, data)
 	return
 }

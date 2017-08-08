@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"go.app.dt.com/models"
+	"go.app.dt.com/utils"
 )
 
 type ProductController struct {
@@ -24,10 +25,17 @@ type UpProductInfo struct {
 	Purcase      string
 }
 
+func (u *UpProductInfo) Test() {
+
+}
+
 // 产品
 func (p *ProductController) Add() {
+	upProductInfo := &UpProductInfo{}
+	utils.StructChangeToMap(upProductInfo)
+
 	if req.Method == "GET" {
-		p.DisplayAdmin("views/product/add.html")
+		// p.DisplayAdmin("views/product/add.html")
 	} else {
 		// 新增
 		pro := make(map[string]interface{}, 0)
