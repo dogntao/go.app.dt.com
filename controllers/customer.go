@@ -45,7 +45,7 @@ func (c *CustomerController) Add() {
 	id, ok := paramMap["id"]
 	customerInfoMap := make(map[string]string, 0)
 	if ok {
-		customerInfoMap = customerModel.Info(id)
+		customerInfoMap, _ = customerModel.Info(id)
 	}
 	customerInfoByte, _ := json.Marshal(customerInfoMap)
 	customerInfo := string(customerInfoByte)

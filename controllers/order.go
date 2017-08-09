@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"go.app.dt.com/models"
+	"go.app.dt.com/utils"
 )
 
 type OrderController struct {
@@ -33,35 +34,38 @@ type OrderInfo struct {
 func (o *OrderController) Add() {
 	// o.ALoginCheck()
 	infoMap := make(map[string]interface{}, 0)
-	infoMap["cus_id"] = "dt"
+	infoMap["cus_id"] = "1"
 	infoMap["exp_charge"] = "10"
 
 	proInfoArr := make([]map[string]string, 0)
+
 	proInfo := make(map[string]string, 0)
 	proInfo["id"] = "1"
 	proInfo["product_name"] = "test1"
 	proInfo["price"] = "9.9"
 	proInfo["count"] = "2"
 	proInfoArr = append(proInfoArr, proInfo)
+
+	proInfo = make(map[string]string, 0)
 	proInfo["id"] = "2"
 	proInfo["product_name"] = "test2"
 	proInfo["price"] = "8.8"
 	proInfo["count"] = "2"
+
 	proInfoArr = append(proInfoArr, proInfo)
 	infoMap["pro_infos"] = proInfoArr
 
 	jsonByte, _ := json.Marshal(infoMap)
-	fmt.Println(string(jsonByte))
+	// fmt.Println(string(jsonByte))
 
 	if req.Method == "GET" {
 		var orderInfo OrderInfo
 		infoJSON := string(jsonByte)
 		err := json.Unmarshal([]byte(infoJSON), &orderInfo)
 		if err == nil {
-			// fmt.Println(orderInfo.CusID)
-			// fmt.Println(orderInfo.ExpCharge)
-			// fmt.Println(orderInfo.ProInfos)
-			// lastID, err := orderModel.Add(orderInfo.CusID, orderInfo.ExpCharge, orderInfo.ProInfos)
+			strMaps := utils.StructArrToMapArr(orderInfo.ProInfos)
+			lastID, err := orderModel.Add(orderInfo.CusID, orderInfo.ExpCharge, strMaps)
+			fmt.Println(lastID, err)
 		}
 		// fmt.Println(strconv.FormatInt(time.Now().Unix(), 10))
 		// o.DisplayAdmin("views/order/add.html")

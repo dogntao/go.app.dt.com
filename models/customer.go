@@ -26,13 +26,12 @@ type CustomerInfo struct {
 var cusTable = "cms_customer"
 
 // 查询详情
-func (c *Customer) Info(id string) (info map[string]string) {
+func (c *Customer) Info(id string) (info map[string]string, err error) {
 	var customerInfo CustomerInfo
 	con := "id=?"
 	bind := []string{id}
-	err := Dtsql.Query(customerInfo, cusTable, con, bind)
+	err = Dtsql.Query(customerInfo, cusTable, con, bind)
 	err = Dtsql.FetchRow()
-	checkErr(err)
 	info = Dtsql.RetMap
 	return
 }

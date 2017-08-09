@@ -18,21 +18,18 @@ type ProductController struct {
 var productModel = &models.Product{}
 
 type UpProductInfo struct {
-	Id           string
-	Product_name string
-	Price        string
-	Count        string
-	Purcase      string
-}
-
-func (u *UpProductInfo) Test() {
-
+	Id           string `json:"id"`
+	Product_name string `json:"product_name"`
+	Price        string `json:"price"`
+	Count        string `json:"count"`
+	Purcase      string `json:"purcase"`
 }
 
 // 产品
 func (p *ProductController) Add() {
-	upProductInfo := &UpProductInfo{}
-	utils.StructChangeToMap(upProductInfo)
+	upProductInfo := &UpProductInfo{"123", "test", "99", "2", "10"}
+	strMap := utils.StructToMap(upProductInfo)
+	fmt.Println(strMap)
 
 	if req.Method == "GET" {
 		// p.DisplayAdmin("views/product/add.html")
