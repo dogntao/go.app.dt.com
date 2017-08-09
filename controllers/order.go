@@ -31,6 +31,7 @@ type OrderInfo struct {
 	CusInfo
 }
 
+// 新增订单
 func (o *OrderController) Add() {
 	// o.ALoginCheck()
 	infoMap := make(map[string]interface{}, 0)
@@ -56,9 +57,10 @@ func (o *OrderController) Add() {
 	infoMap["pro_infos"] = proInfoArr
 
 	jsonByte, _ := json.Marshal(infoMap)
-	// fmt.Println(string(jsonByte))
 
 	if req.Method == "GET" {
+		o.DisplayAdmin("views/order/add.html")
+	} else {
 		var orderInfo OrderInfo
 		infoJSON := string(jsonByte)
 		err := json.Unmarshal([]byte(infoJSON), &orderInfo)
@@ -67,14 +69,11 @@ func (o *OrderController) Add() {
 			lastID, err := orderModel.Add(orderInfo.CusID, orderInfo.ExpCharge, strMaps)
 			fmt.Println(lastID, err)
 		}
-		// fmt.Println(strconv.FormatInt(time.Now().Unix(), 10))
-		// o.DisplayAdmin("views/order/add.html")
-	} else {
-		// var orderInfo OrderInfo
-		// infoJSON := req.PostFormValue("info")
-		// err := json.Unmarshal([]byte(infoJSON), &orderInfo)
-		// if err == nil {
-		// 	lastId, err := orderModel.Add()
-		// }
 	}
+}
+
+// 订单列表
+func (o *OrderController) List() {
+	search := paramMap["search"]
+
 }

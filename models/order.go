@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -20,8 +21,6 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 	cusInfo, err := cusModel.Info(cusId)
 	if err == nil {
 		data["order_name"] = cusInfo["name"] + "-订单-" + time.Now().Format("2006-01-02 15:04")
-		// orderInfoByte, _ := json.Marshal(orderInfo)
-		// data["order_desc"] = string(orderInfoByte)
 		data["cus_id"] = cusId
 		data["cus_mobile"] = cusInfo["mobile"]
 		data["cus_name"] = cusInfo["name"]
@@ -31,25 +30,28 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 		// 获取产品总数和价格
 		var oriPrice, proCount float64
 		oriPrice, proCount = 0, 0
-		// 生成order_desc字段
+		// 处理数据
 		orderInfoNews := make([]map[string]interface{}, 0)
 		orderInfoNew := make(map[string]interface{}, 0)
 		for _, val := range orderInfo {
+			// 生成总价格和总数
 			orderInfoPrice, _ := strconv.ParseFloat(val["price"].(string), 64)
 			orderInfoCount, _ := strconv.ParseFloat(val["count"].(string), 64)
 			oriPrice += orderInfoPrice * orderInfoCount
 			proCount += orderInfoCount
-
+			// 处理order_desc字段
 			orderInfoNew = make(map[string]interface{}, 0)
 			orderInfoNew["id"] = val["id"]
-			orderInfoNew["name"] = val["name"]
-			orderInfoNew["id"] = val["id"]
-
+			orderInfoNew["name"] = val["product_name"]
+			orderInfoNew["pirce"] = val["price"]
+			orderInfoNew["count"] = val["count"]
+			orderInfoNew["money"] = fmt.Sprintf("%.2f", orderInfoPrice*orderInfoCount)
 			orderInfoNews = append(orderInfoNews, orderInfoNew)
 		}
+		orderInfoByte, _ := json.Marshal(orderInfoNews)
+		data["order_desc"] = string(orderInfoByte)
 		// 快递费
 		expChargeFloat, _ := strconv.ParseFloat(expCharge, 64)
-
 		data["pro_count"] = proCount
 		data["ori_price"] = fmt.Sprintf("%.2f", oriPrice+expChargeFloat)
 		// 客户折扣
