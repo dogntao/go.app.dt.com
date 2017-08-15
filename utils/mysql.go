@@ -63,10 +63,10 @@ func (mysql *Mysql) Query(field interface{}, table, con string, bind []string) (
 	fieldArr := make([]string, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
 		// 处理count
-		if t.Field(i).Name == "queryCount" {
+		if t.Field(i).Name == "QueryCount" {
 			fieldArr[i] = "count(*) as queryCount"
 		} else {
-			fieldArr[i] = t.Field(i).Name
+			fieldArr[i] = t.Field(i).Tag.Get("json")
 		}
 	}
 	fieldString := strings.Join(fieldArr, ",")

@@ -10,6 +10,26 @@ import (
 type Order struct {
 }
 
+type OrderCount struct {
+	QueryCount string
+}
+
+type OrderInfo struct {
+	ID          string `json:"id"`
+	OrderName   string `json:"order_name"`
+	OrderDesc   string `json:"order_desc"`
+	CusMobile   string `json:"cus_mobile"`
+	CusName     string `json:"cus_name"`
+	CusAddress  string `json:"cus_address"`
+	CusDiscount string `json:"cus_discount"`
+	ProCount    string `json:"pro_count"`
+	ExpCharge   string `json:"exp_charge"`
+	OriPrice    string `json:"ori_price"`
+	Price       string `json:"price"`
+	CreateDate  string `json:"create_date"`
+	IsDelete    string `json:"is_delete"`
+}
+
 var orderTable = "cms_order"
 
 // 新增订单
@@ -66,11 +86,29 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 }
 
 // 订单列表
-func (o *Order) List() (list []map[string]string) {
-	var productInfo ProductInfo
-	con := "is_delete=?"
-	bind := []string{"0"}
-	err := Dtsql.Query(productInfo, productTable, con, bind)
+func (o *Order) List(seaStr string, pageIndex, pageSize int) (total int, list []map[string]string) {
+	con := ""
+	bind := []string{}
+	if seaStr != "" {
+		con = "cus_id=? OR cus_mobile LIKE ? OR cus_name LIKE ?"
+		bind = append(bind, seaStr)
+		bind = append(bind, "%"+seaStr+"%")
+		bind = append(bind, "%"+seaStr+"%")
+	}
+	// 查询总数
+	var orderCount OrderCount
+	err := Dtsql.Query(orderCount, orderTable, con, bind)
+	err = Dtsql.FetchRow()
+	total, err = strconv.Atoi(Dtsql.RetMap["queryCount"])
+	// 查询列表(分页)
+	var orderInfo OrderInfo
+	if con == "" {
+		con = "1=1"
+	}
+	con = con + " LIMIT ?,?"
+	bind = append(bind, strconv.Itoa((pageIndex-1)*pageSize))
+	bind = append(bind, strconv.Itoa(pageSize))
+	err = Dtsql.Query(orderInfo, orderTable, con, bind)
 	err = Dtsql.FetchAll()
 	checkErr(err)
 	list = Dtsql.RetRows

@@ -9,18 +9,18 @@ type Customer struct {
 }
 
 type customerCount struct {
-	queryCount string
+	QueryCount string
 }
 
 type CustomerInfo struct {
-	id         int64
-	name       string
-	mobile     string
-	address    string
-	balance    string
-	discount   string
-	company_id int64
-	is_delete  int64
+	ID        int64  `json:"id"`
+	Name      string `json:"name"`
+	Mobile    string `json:"mobile"`
+	Address   string `json:"address"`
+	Balance   string `json:"balance"`
+	Discount  string `json:"discount"`
+	CompanyID int64  `json:"company_id"`
+	IsDelete  int64  `json:"is_delete"`
 }
 
 var cusTable = "cms_customer"
