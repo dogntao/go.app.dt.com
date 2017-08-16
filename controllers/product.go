@@ -25,6 +25,12 @@ type UpProductInfo struct {
 	Purcase      string `json:"purcase"`
 }
 
+// 产品首页
+func (p *ProductController) Index() {
+	fmt.Println("index")
+	p.Display("views/product/index.html")
+}
+
 // 产品
 func (p *ProductController) Add() {
 	upProductInfo := &UpProductInfo{"123", "test", "99", "2", "10"}

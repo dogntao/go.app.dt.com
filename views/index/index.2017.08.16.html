@@ -1,0 +1,25 @@
+{{define "index"}} {{template "no_left" .}}
+
+<div id="gallery" style="margin-top:10px">
+    <div style="margin-bottom:10px">
+        <img src="/image/index/index1.jpg">
+    </div>
+    <div style="margin-bottom:10px">
+        <img src="/image/index/index2.jpg">
+    </div>
+    
+</div>
+
+<script>
+    require(['jquery', 'vue'], function($, Vue) {
+        // layui.use(['form'], function() {});
+
+        // new Vue({
+        //     el: '#body',
+        //     data: {
+        //         act: '{{.Act}}'
+        //     },
+        // })
+    })
+</script>
+{{template "footer"}} {{end}}

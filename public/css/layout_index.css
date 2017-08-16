@@ -18,6 +18,22 @@
 .content{padding: 10px 0}
 .title{color: #ff6709}
 
+.layui-main{
+    width: 1226px
+}
+
+.img_610_450{
+    width: 610px; height: 450px;
+    float: left;
+    margin-bottom: 6px
+}
+
+.img_405_540{
+    width: 405px; height: 540px;
+    float: left;
+    margin-bottom: 6px
+}
+
 .left{margin-top: 60px}
 
 .right {
