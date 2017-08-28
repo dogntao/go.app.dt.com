@@ -6,14 +6,14 @@
     <div class="layui-form-item">
          <label class="layui-form-label">用户</label> 
         <div class="layui-input-block">
-            <div class="user_select">
-                <!-- <option value=""></option>
-                <option value="0">北京</option>
+            <select class="user_select" lay-ignore style="width: 50%">
+                <option value="">123</option>
+                <!-- <option value="0">北京</option>
                 <option value="1">上海</option>
                 <option value="2">广州</option>
                 <option value="3">深圳</option>
                 <option value="4">杭州</option> -->
-            </div>
+            </select>
         </div>
     </div>
 </div>
@@ -32,7 +32,51 @@
             //     },"json")
             // })
         });
-        $(".user_select").select2();
+
+        function formatRepo (repo) {
+            if (repo.loading) return repo.text;
+      
+            var markup = repo.name
+      
+            return markup;
+          }
+      
+          function formatRepoSelection (repo) {
+            return repo.name;
+          }
+
+        $(".user_select").select2({
+            ajax: {
+                url: "/Customer/Select2",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: 1
+                    };
+                },
+                processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.Items,
+                        pagination: {
+                            more: (params.page * 10) < data.Total
+                        }
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            // minimumInputLength: 1,
+            templateResult: formatRepo, // omitted for brevity, see the source of this page
+            templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+        });
     })
 </script>
 {{template "footer"}} {{end}}

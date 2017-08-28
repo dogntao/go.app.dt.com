@@ -15,6 +15,34 @@ type CustomerController struct {
 	BaseController
 }
 
+type CustomerSelect2 struct {
+	Total int
+	Items []map[string]string
+}
+
+// 列表
+func (c *CustomerController) Select2() {
+	if req.Method == "GET" {
+		// 搜索数据
+		search := paramMap["q"]
+		// 处理分页
+		var page int64
+		page = 1
+		getPage, ok := paramMap["page"]
+		if ok {
+			page, _ = strconv.ParseInt(getPage, 10, 64)
+		}
+
+		total, list := customerModel.Manage(search, page, 10)
+		customerSelect2 := &CustomerSelect2{}
+		customerSelect2.Total = total
+		customerSelect2.Items = list
+
+		customerSelect2Byte, _ := json.Marshal(customerSelect2)
+		fmt.Fprintln(rep, string(customerSelect2Byte))
+	}
+}
+
 // 列表
 func (c *CustomerController) Manage() {
 	if req.Method == "GET" {
