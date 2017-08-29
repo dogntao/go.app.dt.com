@@ -34,10 +34,19 @@ func (c *CustomerController) Select2() {
 		}
 
 		total, list := customerModel.Manage(search, page, 10)
+
 		customerSelect2 := &CustomerSelect2{}
 		customerSelect2.Total = total
-		customerSelect2.Items = list
 
+		// 返回id和text
+		if len(list) > 0 {
+			for _, val := range list {
+				customerInfo := make(map[string]string, 0)
+				customerInfo["id"] = val["id"]
+				customerInfo["text"] = val["name"]
+				customerSelect2.Items = append(customerSelect2.Items, customerInfo)
+			}
+		}
 		customerSelect2Byte, _ := json.Marshal(customerSelect2)
 		fmt.Fprintln(rep, string(customerSelect2Byte))
 	}

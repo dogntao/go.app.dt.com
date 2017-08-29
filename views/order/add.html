@@ -6,19 +6,28 @@
     <div class="layui-form-item">
          <label class="layui-form-label">用户</label> 
         <div class="layui-input-block">
-            <select class="user_select" lay-ignore style="width: 50%">
-                <option value="">123</option>
-                <!-- <option value="0">北京</option>
-                <option value="1">上海</option>
-                <option value="2">广州</option>
-                <option value="3">深圳</option>
-                <option value="4">杭州</option> -->
+            <select class="user_select" lay-ignore style="width: 50%" v-model="productId">
             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机</label>
+        <div class="layui-input-block">
+            <input type="text" name="mobile" v-model="productId" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
         </div>
     </div>
 </div>
 <script>
-    require(['jquery', 'select2', 'vue', 'layui'], function($) {
+    require(['jquery', 'vue', 'select2', 'layui'], function($,Vue) {
+        var addOrderVue = new Vue({
+            el: '#add_order',
+            data: {
+                productId: "0",
+            },
+            methods:{
+            }
+        });
+
         layui.use(['form','layer'], function() {
             // var form = layui.form();
             // var layer = layui.layer;
@@ -33,19 +42,9 @@
             // })
         });
 
-        function formatRepo (repo) {
-            if (repo.loading) return repo.text;
-      
-            var markup = repo.name
-      
-            return markup;
-          }
-      
-          function formatRepoSelection (repo) {
-            return repo.name;
-          }
-
         $(".user_select").select2({
+            placeholder: "搜:客户id/姓名/电话/地址",
+            allowClear: true,
             ajax: {
                 url: "/Customer/Select2",
                 dataType: 'json',
@@ -53,7 +52,7 @@
                 data: function (params) {
                     return {
                         q: params.term, // search term
-                        page: 1
+                        page: params.page
                     };
                 },
                 processResults: function (data, params) {
@@ -74,8 +73,11 @@
             },
             escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
             // minimumInputLength: 1,
-            templateResult: formatRepo, // omitted for brevity, see the source of this page
-            templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+        });
+
+        $(".user_select").change(function(){
+            console.log($(this).val());
+            console.log(addOrderVue.productId);
         });
     })
 </script>
