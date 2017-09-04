@@ -38,7 +38,7 @@ func (c *AdminController) Login() {
 		user.UserName = req.PostFormValue("username")
 		user.PassWord = req.PostFormValue("password")
 		check := user.LoginCheck()
-		lr := &jsonResult{}
+		lr := &JsonResult{}
 		lr.Code = 201
 		lr.Message = "用户名或密码错误"
 		if check {

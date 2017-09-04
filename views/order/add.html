@@ -1,34 +1,89 @@
 {{define "add"}} {{template "left" .}}
 <style type="text/css">
-
+    .select2 {
+        margin-top: 5px
+    }
 </style>
 <div id="add_order" class="layui-form">
-    <div class="layui-form-item">
-         <label class="layui-form-label">用户</label> 
-        <div class="layui-input-block">
-            <select class="user_select" lay-ignore style="width: 50%" v-model="productId">
-            </select>
+    <fieldset class="layui-elem-field">
+        <legend>选择用户</legend>
+        <div class="layui-field-box">
+            <div class="layui-form-item">
+                <select class="user_select" lay-ignore style="width: 100%" v-model="userId">
+                </select>
+            </div>
+            <!-- 用户详情 -->
+            <template v-if="userInfo">
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <tr>
+                            <td>
+                                姓名:${userInfo.name}
+                            </td>
+                            <td>
+                                手机:${userInfo.mobile}
+                            </td>
+                            <td>
+                                余额:${userInfo.balance}
+                            </td>
+                            <td>
+                                折扣:${userInfo.discount}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                地址:${userInfo.address}
+                            </td>
+                        </tr>
+                    </table>
+    
+                </div>
+            </template>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">手机</label>
-        <div class="layui-input-block">
-            <input type="text" name="mobile" v-model="productId" required  lay-verify="required" placeholder="请输入手机" autocomplete="off" class="layui-input">
+    </fieldset>
+
+    <!-- 选择产品 -->
+    <fieldset class="layui-elem-field">
+        <legend>选择产品</legend>
+        <div class="layui-field-box">
+            <table class="layui-table">
+                <tr>
+                    <td>
+                        序号
+                    </td>
+                    <td>
+                        产品
+                    </td>
+                    <td>
+                        个数
+                    </td>
+                    <td>
+                        序号
+                    </td>
+                    <td>
+                        产品
+                    </td>
+                    <td>
+                        个数
+                    </td>
+                </tr>
+            </table>
         </div>
-    </div>
+    </fieldset>
 </div>
 <script>
-    require(['jquery', 'vue', 'select2', 'layui'], function($,Vue) {
+    require(['jquery', 'vue', 'select2', 'layui'], function ($, Vue) {
         var addOrderVue = new Vue({
             el: '#add_order',
             data: {
-                productId: "0",
+                userId: "",
+                userInfo :""
             },
-            methods:{
+            methods: {
             }
         });
 
-        layui.use(['form','layer'], function() {
+        layui.use(['form', 'layer'], function () {
             // var form = layui.form();
             // var layer = layui.layer;
             // form.on('submit(customerAdd)', function(data) {
@@ -75,10 +130,17 @@
             // minimumInputLength: 1,
         });
 
-        $(".user_select").change(function(){
-            console.log($(this).val());
-            console.log(addOrderVue.productId);
-        });
+        $(".user_select").change(function () {
+            addOrderVue.userId = $(this).val();
+            console.log(addOrderVue.userId);
+            $.getJSON("/Customer/Info",{'id':addOrderVue.userId},function(data){
+                if(data.Code == 200){
+                    console.log(data.Result)
+                    addOrderVue.userInfo = data.Result;
+                }
+            })
+        })
     })
+
 </script>
 {{template "footer"}} {{end}}

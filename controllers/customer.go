@@ -20,7 +20,12 @@ type CustomerSelect2 struct {
 	Items []map[string]string
 }
 
-// 列表
+type CustomerInfoJson struct {
+	Code   int
+	Result map[string]string
+}
+
+// select2
 func (c *CustomerController) Select2() {
 	if req.Method == "GET" {
 		// 搜索数据
@@ -116,7 +121,7 @@ func (c *CustomerController) Add() {
 		}
 
 		// 返回json值
-		jr := &jsonResult{}
+		jr := &JsonResult{}
 		if err != nil {
 			jr.Code = 201
 			jr.Message = resMes + "客户失败"
@@ -127,4 +132,19 @@ func (c *CustomerController) Add() {
 		r, _ := json.Marshal(jr)
 		fmt.Fprintln(rep, string(r))
 	}
+}
+
+// 顾客详情
+func (c *CustomerController) Info() {
+	// 根据id获取详情
+	id := paramMap["id"]
+	customerInfoMap := make(map[string]string, 0)
+	customerInfoMap, err := customerModel.Info(id)
+	jsonResult := &CustomerInfoJson{Code: 0}
+	if err == nil {
+		jsonResult.Code = 200
+		jsonResult.Result = customerInfoMap
+	}
+	customerInfoByte, _ := json.Marshal(jsonResult)
+	fmt.Fprintln(rep, string(customerInfoByte))
 }

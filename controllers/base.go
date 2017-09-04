@@ -11,7 +11,7 @@ import (
 type BaseController struct {
 }
 
-type jsonResult struct {
+type JsonResult struct {
 	Code    int64
 	Message string
 }

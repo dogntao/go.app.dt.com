@@ -52,7 +52,7 @@ func (p *ProductController) Add() {
 
 		res, err := productModel.Add(pro)
 		// 返回json值
-		jr := &jsonResult{}
+		jr := &JsonResult{}
 		if err != nil {
 			jr.Code = 201
 			jr.Message = "新增产品失败"
@@ -131,7 +131,7 @@ func (p *ProductController) Update() {
 		fmt.Println(affRows, err)
 
 		// 返回json值
-		jr := &jsonResult{}
+		jr := &JsonResult{}
 		if err != nil {
 			jr.Code = 201
 			jr.Message = "修改产品失败"
