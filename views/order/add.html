@@ -67,14 +67,21 @@
                         个数
                     </td>
                 </tr>
-                <tr v-for="item in list"> 
-                        <td>${item.id}</td> 
-                        <td>${item.product_name}(${item.count})</td> 
-                        <td>${item.price}</td> 
-                </tr> 
+                
+                <template v-for="item in list"> 
+                        <tr>
+                            <td>${item.id}</td> 
+                            <td>${item.product_name}(${item.price})(库存:${item.count})</td> 
+                            <td><input type="text" name="balance" v-model="count[item.id]"  autocomplete="off" class="layui-input"></td> 
+                        </tr>
+                </template> 
             </table>
         </div>
     </fieldset>
+
+    <div class="layui-form-item">
+        <button class="layui-btn" lay-submit lay-filter="orderAdd">下单</button>
+    </div>
 </div>
 <script>
     require(['jquery', 'vue', 'select2', 'layui'], function ($, Vue) {
@@ -84,23 +91,25 @@
                 userId: "",
                 userInfo :"",
                 list: jQuery.parseJSON('{{.List}}'),
+                count:[]
             },
             methods: {
             }
         });
 
         layui.use(['form', 'layer'], function () {
-            // var form = layui.form();
-            // var layer = layui.layer;
-            // form.on('submit(customerAdd)', function(data) {
-            //     $.post("/Customer/add?id={{.Id}}", data.field, function(result) {
-            //         if (result.Code == 200) {
-            //             location.href = "/Customer/Manage";
-            //         } else {
-            //             layer.msg(result.Message)
-            //         }
-            //     },"json")
-            // })
+            var form = layui.form();
+            var layer = layui.layer;
+            form.on('submit(orderAdd)', function(data) {
+                console.log(addOrderVue);
+                // $.post("/Customer/add?id={{.Id}}", data.field, function(result) {
+                //     if (result.Code == 200) {
+                //         location.href = "/Customer/Manage";
+                //     } else {
+                //         layer.msg(result.Message)
+                //     }
+                // },"json")
+            })
         });
 
         $(".user_select").select2({
@@ -138,10 +147,10 @@
 
         $(".user_select").change(function () {
             addOrderVue.userId = $(this).val();
-            console.log(addOrderVue.userId);
+            console.log(addOrderVue.count);
             $.getJSON("/Customer/Info",{'id':addOrderVue.userId},function(data){
                 if(data.Code == 200){
-                    console.log(data.Result)
+                    // console.log(data.Result)
                     addOrderVue.userInfo = data.Result;
                 }
             })

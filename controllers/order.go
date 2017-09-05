@@ -14,7 +14,8 @@ type OrderController struct {
 }
 
 var orderModel = &models.Order{}
-var productModel = &models.Product{}
+
+// var productModel = &models.Product{}
 
 type ProInfo struct {
 	ID          string `json:"id"`

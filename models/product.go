@@ -6,11 +6,11 @@ type Product struct {
 }
 
 type ProductInfo struct {
-	id           int64
-	product_name string
-	price        float64
-	count        int64
-	is_delete    int64
+	ID          int64   `json:"id"`
+	ProductName string  `json:"product_name"`
+	Price       float64 `json:"price"`
+	Count       int64   `json:"count"`
+	IsDelete    int64   `json:"is_delete"`
 }
 
 var productTable = "cms_product"
