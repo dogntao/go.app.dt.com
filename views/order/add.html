@@ -67,6 +67,11 @@
                         个数
                     </td>
                 </tr>
+                <tr v-for="item in list"> 
+                        <td>${item.id}</td> 
+                        <td>${item.product_name}(${item.count})</td> 
+                        <td>${item.price}</td> 
+                </tr> 
             </table>
         </div>
     </fieldset>
@@ -77,7 +82,8 @@
             el: '#add_order',
             data: {
                 userId: "",
-                userInfo :""
+                userInfo :"",
+                list: jQuery.parseJSON('{{.List}}'),
             },
             methods: {
             }

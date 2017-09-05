@@ -14,6 +14,7 @@ type OrderController struct {
 }
 
 var orderModel = &models.Order{}
+var productModel = &models.Product{}
 
 type ProInfo struct {
 	ID          string `json:"id"`
@@ -60,6 +61,10 @@ func (o *OrderController) Add() {
 	jsonByte, _ := json.Marshal(infoMap)
 
 	if req.Method == "GET" {
+		// 产品列表
+		productList := productModel.List()
+		listByte, _ := json.Marshal(productList)
+		assign["List"] = string(listByte)
 		o.DisplayAdmin("views/order/add.html")
 	} else {
 		var orderInfo OrderInfo
