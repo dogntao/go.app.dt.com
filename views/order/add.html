@@ -36,7 +36,7 @@
                             </td>
                         </tr>
                     </table>
-    
+
                 </div>
             </template>
         </div>
@@ -67,14 +67,21 @@
                         个数
                     </td>
                 </tr>
-                
-                <template v-for="item in list"> 
-                        <tr>
-                            <td>${item.id}</td> 
-                            <td>${item.product_name}(${item.price})(库存:${item.count})</td> 
-                            <td><input type="text" name="balance" v-model="count[item.id]"  autocomplete="off" class="layui-input"></td> 
-                        </tr>
-                </template> 
+
+                <template v-for="item in list">
+                    <tr>
+                        <template v-if="$index%2==0">
+                            <td>${item.id}</td>
+                            <td>${item.product_name}(${item.price})(库存:${item.count})</td>
+                            <td><input type="text" name="balance" v-model="count[item.id]" autocomplete="off" class="layui-input"></td>
+                            <template v-if="list[$index+1]">
+                                <td>${list[$index+1].id}</td>
+                                <td>${list[$index+1].product_name}(${list[$index+1].price})(库存:${list[$index+1].count})</td>
+                                <td><input type="text" name="balance" v-model="count[list[$index+1].id]" autocomplete="off" class="layui-input"></td>
+                            </template>
+                        </template>
+                    </tr>
+                </template>
             </table>
         </div>
     </fieldset>
@@ -89,9 +96,9 @@
             el: '#add_order',
             data: {
                 userId: "",
-                userInfo :"",
+                userInfo: "",
                 list: jQuery.parseJSON('{{.List}}'),
-                count:[]
+                count: []
             },
             methods: {
             }
@@ -100,7 +107,7 @@
         layui.use(['form', 'layer'], function () {
             var form = layui.form();
             var layer = layui.layer;
-            form.on('submit(orderAdd)', function(data) {
+            form.on('submit(orderAdd)', function (data) {
                 console.log(addOrderVue);
                 // $.post("/Customer/add?id={{.Id}}", data.field, function(result) {
                 //     if (result.Code == 200) {
@@ -148,8 +155,8 @@
         $(".user_select").change(function () {
             addOrderVue.userId = $(this).val();
             console.log(addOrderVue.count);
-            $.getJSON("/Customer/Info",{'id':addOrderVue.userId},function(data){
-                if(data.Code == 200){
+            $.getJSON("/Customer/Info", { 'id': addOrderVue.userId }, function (data) {
+                if (data.Code == 200) {
                     // console.log(data.Result)
                     addOrderVue.userInfo = data.Result;
                 }
