@@ -5,6 +5,7 @@
     }
 </style>
 <div id="add_order" class="layui-form">
+    <!-- 用户信息 -->
     <fieldset class="layui-elem-field">
         <legend>选择用户</legend>
         <div class="layui-field-box">
@@ -12,8 +13,9 @@
                 <select class="user_select" lay-ignore style="width: 100%" v-model="userId">
                 </select>
             </div>
-            <!-- 用户详情 -->
+            <!-- 用户信息 -->
             <template v-if="userInfo">
+                <!-- 用户详情 -->
                 <div class="layui-form-item">
                     <table class="layui-table">
                         <tr>
@@ -37,6 +39,10 @@
                         </tr>
                     </table>
 
+                </div>
+                <!-- 快递费 -->
+                <div class="layui-form-item">
+                    <input type="text" name="exp_charge" v-model="expCharge" placeholder="请输入快递费" autocomplete="off" class="layui-input">
                 </div>
             </template>
         </div>
@@ -86,6 +92,7 @@
         </div>
     </fieldset>
 
+    <!-- 下单 -->
     <div class="layui-form-item">
         <button class="layui-btn" lay-submit lay-filter="orderAdd">下单</button>
     </div>
@@ -96,9 +103,10 @@
             el: '#add_order',
             data: {
                 userId: "",
+                expCharge: "",
                 userInfo: "",
                 list: jQuery.parseJSON('{{.List}}'),
-                count: []
+                count: {}
             },
             methods: {
             }
@@ -109,13 +117,17 @@
             var layer = layui.layer;
             form.on('submit(orderAdd)', function (data) {
                 console.log(addOrderVue);
-                // $.post("/Customer/add?id={{.Id}}", data.field, function(result) {
-                //     if (result.Code == 200) {
-                //         location.href = "/Customer/Manage";
-                //     } else {
-                //         layer.msg(result.Message)
-                //     }
-                // },"json")
+                var datas = {};
+                datas.user_id = addOrderVue.userId;
+                datas.exp_charge = addOrderVue.expCharge;
+                datas.count = JSON.stringify(addOrderVue.count);
+                $.post("/Order/add?id={{.Id}}", datas, function(result) {
+                    // if (result.Code == 200) {
+                    //     location.href = "/Customer/Manage";
+                    // } else {
+                    //     layer.msg(result.Message)
+                    // }
+                },"json")
             })
         });
 

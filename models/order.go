@@ -53,6 +53,8 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 		// 处理数据
 		orderInfoNews := make([]map[string]interface{}, 0)
 		orderInfoNew := make(map[string]interface{}, 0)
+		// 批量查询产品详情
+
 		for _, val := range orderInfo {
 			// 生成总价格和总数
 			orderInfoPrice, _ := strconv.ParseFloat(val["price"].(string), 64)
@@ -70,11 +72,11 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 		}
 		orderInfoByte, _ := json.Marshal(orderInfoNews)
 		data["order_desc"] = string(orderInfoByte)
-		// 快递费
+		// 原价+快递费
 		expChargeFloat, _ := strconv.ParseFloat(expCharge, 64)
 		data["pro_count"] = proCount
 		data["ori_price"] = fmt.Sprintf("%.2f", oriPrice+expChargeFloat)
-		// 客户折扣
+		// 实际价格(客户折扣价格+快递费)
 		cusDiscount, _ := strconv.ParseFloat(data["cus_discount"].(string), 64)
 		cusDiscount = cusDiscount / 100
 		data["price"] = fmt.Sprintf("%.2f", (oriPrice*cusDiscount)+expChargeFloat)

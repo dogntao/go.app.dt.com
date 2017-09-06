@@ -34,6 +34,18 @@ func (p *Product) List() (list []map[string]string) {
 	return
 }
 
+// 指定产品列表
+func (p *Product) ListByIds(ids []string) (list []map[string]string) {
+	var productInfo ProductInfo
+	con := "is_delete=?"
+	bind := []string{"0"}
+	err := Dtsql.Query(productInfo, productTable, con, bind)
+	err = Dtsql.FetchAll()
+	checkErr(err)
+	list = Dtsql.RetRows
+	return
+}
+
 // 批量更新(更新产品，新增库存)
 func (p *Product) UpdateProducts(upDatas, inPurcases []map[string]string) (affRow int64, err error) {
 	if len(upDatas) > 0 {
