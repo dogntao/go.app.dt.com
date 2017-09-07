@@ -122,11 +122,11 @@
                 datas.exp_charge = addOrderVue.expCharge;
                 datas.count = JSON.stringify(addOrderVue.count);
                 $.post("/Order/add?id={{.Id}}", datas, function(result) {
-                    // if (result.Code == 200) {
-                    //     location.href = "/Customer/Manage";
-                    // } else {
-                    //     layer.msg(result.Message)
-                    // }
+                    if (result.Code == 200) {
+                        location.href = "/Order/Manage";
+                    } else {
+                        layer.msg(result.Message)
+                    }
                 },"json")
             })
         });

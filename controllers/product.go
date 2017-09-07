@@ -38,7 +38,7 @@ func (p *ProductController) Add() {
 	fmt.Println(strMap)
 
 	if req.Method == "GET" {
-		// p.DisplayAdmin("views/product/add.html")
+		p.DisplayAdmin("views/product/add.html")
 	} else {
 		// 新增
 		pro := make(map[string]interface{}, 0)

@@ -33,7 +33,7 @@ type OrderInfo struct {
 var orderTable = "cms_order"
 
 // 新增订单
-func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{}) (lastId int64, err error) {
+func (o *Order) Add(cusId, expCharge string, productCount map[string]interface{}) (lastId int64, err error) {
 	data := make(map[string]interface{}, 0)
 	// 获取用户信息
 	cusModel := &Customer{}
@@ -54,19 +54,26 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 		orderInfoNews := make([]map[string]interface{}, 0)
 		orderInfoNew := make(map[string]interface{}, 0)
 		// 批量查询产品详情
-
-		for _, val := range orderInfo {
+		productIds := []string{}
+		productCounts := make([]interface{}, 0)
+		for key, val := range productCount {
+			productIds = append(productIds, key)
+			productCounts = append(productCounts, val)
+		}
+		productModel := &Product{}
+		productInfos := productModel.ListByIds(productIds)
+		for k, v := range productInfos {
 			// 生成总价格和总数
-			orderInfoPrice, _ := strconv.ParseFloat(val["price"].(string), 64)
-			orderInfoCount, _ := strconv.ParseFloat(val["count"].(string), 64)
+			orderInfoPrice, _ := strconv.ParseFloat(v["price"], 64)
+			orderInfoCount, _ := strconv.ParseFloat(productCounts[k].(string), 64)
 			oriPrice += orderInfoPrice * orderInfoCount
 			proCount += orderInfoCount
 			// 处理order_desc字段
 			orderInfoNew = make(map[string]interface{}, 0)
-			orderInfoNew["id"] = val["id"]
-			orderInfoNew["name"] = val["product_name"]
-			orderInfoNew["pirce"] = val["price"]
-			orderInfoNew["count"] = val["count"]
+			orderInfoNew["id"] = v["id"]
+			orderInfoNew["name"] = v["product_name"]
+			orderInfoNew["pirce"] = v["price"]
+			orderInfoNew["count"] = orderInfoCount
 			orderInfoNew["money"] = fmt.Sprintf("%.2f", orderInfoPrice*orderInfoCount)
 			orderInfoNews = append(orderInfoNews, orderInfoNew)
 		}
@@ -81,7 +88,7 @@ func (o *Order) Add(cusId, expCharge string, orderInfo []map[string]interface{})
 		cusDiscount = cusDiscount / 100
 		data["price"] = fmt.Sprintf("%.2f", (oriPrice*cusDiscount)+expChargeFloat)
 		data["create_date"] = time.Now().Unix()
-
+		// fmt.Println(data)
 		lastId, err = Dtsql.Insert(orderTable, data)
 	}
 	return

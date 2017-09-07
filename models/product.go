@@ -1,6 +1,7 @@
 package models
 
 import "encoding/json"
+import "strings"
 
 type Product struct {
 }
@@ -37,8 +38,15 @@ func (p *Product) List() (list []map[string]string) {
 // 指定产品列表
 func (p *Product) ListByIds(ids []string) (list []map[string]string) {
 	var productInfo ProductInfo
-	con := "is_delete=?"
-	bind := []string{"0"}
+	bind := []string{}
+	conData := []string{}
+	for _, val := range ids {
+		bind = append(bind, val)
+		conData = append(conData, "?")
+	}
+	con := "id in ("
+	con += strings.Join(conData, ",")
+	con += ")"
 	err := Dtsql.Query(productInfo, productTable, con, bind)
 	err = Dtsql.FetchAll()
 	checkErr(err)
