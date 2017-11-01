@@ -1,15 +1,20 @@
 {{define "list"}} {{template "left" .}}
-<div id="product_list" class="row" v-cloak>
+<div id="product_list" class="layui-container" v-cloak>
     <div method="POST" class="layui-form layui-form-pane" action="">
-        <div class="layui-form-item">
-            <label class="layui-form-label">产品状态</label>
-            <div class="layui-input-block">
-                <select name="is_delete" lay-verify="required" v-model="isDelete" @change="changeIsDelete()">
-                    <option value="-1">全部</option>
-                    <option value="0">上线</option>
-                    <option value="1">下线</option>
-                </select>
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">产品状态</label>
+                    <div class="layui-input-block">
+                        <select name="is_delete" lay-verify="required" v-model="isDelete" lay-filter="isDelete">
+                            <option value="-1">全部</option>
+                            <option value="0">上线</option>
+                            <option value="1">下线</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+            <div class="layui-col-xs6"></div>
         </div>
 
         <table class="layui-table">
@@ -21,65 +26,58 @@
                     <th>库存</th>
                     <th>进货</th>
                     <th>操作</th>
-                </tr> 
+                </tr>
             </thead>
             <tbody>
-                <tr v-for="item in list"> 
-                    <td>${item.id}</td> 
-                    <td><input type="text" class="layui-input" name="product_name[${item.id}]" v-model="item.product_name"></td> 
-                    <td><input type="text" class="layui-input" name="price[${item.id}]" v-model="item.price"></td> 
-                    <td><input type="text" class="layui-input" name="count[${item.id}]" v-model="item.count"></td> 
-                    <td><input type="text" class="layui-input" name="purcase[${item.id}]" v-model="item.purcase"></td> 
+                <tr v-for="item in list">
+                    <td>${item.id}</td>
+                    <td><input type="text" class="layui-input" name="product_name[${item.id}]" v-model="item.product_name"></td>
+                    <td><input type="text" class="layui-input" name="price[${item.id}]" v-model="item.price"></td>
+                    <td><input type="text" class="layui-input" name="count[${item.id}]" v-model="item.count"></td>
+                    <td><input type="text" class="layui-input" name="purcase[${item.id}]" v-model="item.purcase"></td>
                     <td>
-                        <button 
-                            class="layui-btn layui-btn-small "
-                            :class="item.is_delete==0?'layui-btn-danger':''"
-                        >
+                        <button class="layui-btn layui-btn-small " :class="item.is_delete==0?'layui-btn-danger':''">
                             ${item.is_delete==0?'下线':'上线'}
                         </button>
-                    </td> 
-                </tr>  
+                    </td>
+                </tr>
             </tbody>
         </table>
         <button class="layui-btn" lay-submit lay-filter="productUp">立即修改</button>
     </div>
 </div>
 <script>
-    require(['jquery', 'vue', 'layui'], function($,Vue) {
-        ProductListVue =  new Vue({
+    require(['jquery', 'vue', 'layui'], function ($, Vue) {
+        ProductListVue = new Vue({
             el: '#product_list',
             data: {
                 list: jQuery.parseJSON('{{.List}}'),
                 isDelete: '{{.isDelete}}'
             },
-            methods:{
-                // 搜索
-                changeIsDelete:function(){
-                    console.log("123");
-                    // location.href="/Customer/Manage?search="+this.searchText
-                },
+            methods: {
             },
-            watch:{
-                "isDelete":function(){
-                    console.log("123");
-                }
+            watch: {
             }
         });
-        layui.use(['form','layer'], function() {
+        layui.use(['form', 'layer'], function () {
             var form = layui.form();
             var layer = layui.layer;
-            form.on('submit(productUp)', function(data) {
+            form.on('submit(productUp)', function (data) {
                 var datas = {};
                 datas.list = JSON.stringify(ProductListVue.list);
-                $.post("/Product/Update", datas, function(result) {
+                $.post("/Product/Update", datas, function (result) {
                     if (result.Code == 200) {
                         location.href = "/Product/List";
                     } else {
                         layer.msg(result.Message)
                     }
-                },"json")
+                }, "json")
+            })
+            form.on('select(isDelete)', function (data) {
+                location.href = "/Product/List?is_delete=" + data.value;
             })
         });
     })
+
 </script>
 {{template "footer"}} {{end}}
