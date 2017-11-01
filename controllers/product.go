@@ -49,7 +49,6 @@ func (p *ProductController) Add() {
 		if req.PostFormValue("is_delete") == "1" {
 			pro["is_delete"] = 0
 		}
-
 		res, err := productModel.Add(pro)
 		// 返回json值
 		jr := &JsonResult{}
@@ -68,14 +67,20 @@ func (p *ProductController) Add() {
 // 产品列表
 func (p *ProductController) List() {
 	if req.Method == "GET" {
+		// 状态
+		isDelete := paramMap["is_delete"]
+		if isDelete == "" {
+			isDelete = "-1"
+		}
 		// 列表
-		productList := productModel.List()
+		productList := productModel.List(isDelete)
 		// 处理进货
-		for k, _ := range productList {
+		for k := range productList {
 			productList[k]["purcase"] = ""
 		}
 		listByte, _ := json.Marshal(productList)
 		assign["List"] = string(listByte)
+		assign["isDelete"] = isDelete
 		p.DisplayAdmin("views/product/list.html")
 	}
 }

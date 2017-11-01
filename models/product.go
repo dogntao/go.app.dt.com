@@ -24,10 +24,14 @@ func (p *Product) Add(data map[string]interface{}) (lastId int64, err error) {
 }
 
 // 产品列表
-func (p *Product) List() (list []map[string]string) {
+func (p *Product) List(isDelete string) (list []map[string]string) {
 	var productInfo ProductInfo
-	con := "is_delete=?"
-	bind := []string{"0"}
+	con := ""
+	bind := []string{}
+	if isDelete != "-1" && isDelete != "" {
+		con = "is_delete=?"
+		bind = append(bind, isDelete)
+	}
 	err := Dtsql.Query(productInfo, productTable, con, bind)
 	err = Dtsql.FetchAll()
 	checkErr(err)

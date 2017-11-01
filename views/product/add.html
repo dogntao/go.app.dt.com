@@ -44,7 +44,7 @@
             form.on('submit(productAdd)', function(data) {
                 $.post("/Product/Add", data.field, function(result) {
                     if (result.Code == 200) {
-                        location.href = "/Product/List";
+                        location.href = "/Product/List?is_delete=0";
                     } else {
                         layer.msg(result.Message)
                     }

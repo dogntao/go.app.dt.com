@@ -20,7 +20,7 @@ func (o *OrderController) Add() {
 	if req.Method == "GET" {
 		id := paramMap["id"]
 		// 产品列表
-		productList := productModel.List()
+		productList := productModel.List("0")
 		listByte, _ := json.Marshal(productList)
 		assign["List"] = string(listByte)
 		// 获取到id参数,编辑

@@ -1,6 +1,17 @@
 {{define "list"}} {{template "left" .}}
-<div id="product_list">
-    <div method="POST" class="layui-form" action="">
+<div id="product_list" class="row" v-cloak>
+    <div method="POST" class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">产品状态</label>
+            <div class="layui-input-block">
+                <select name="is_delete" lay-verify="required" v-model="isDelete" @change="changeIsDelete()">
+                    <option value="-1">全部</option>
+                    <option value="0">上线</option>
+                    <option value="1">下线</option>
+                </select>
+            </div>
+        </div>
+
         <table class="layui-table">
             <thead>
                 <tr>
@@ -39,13 +50,19 @@
             el: '#product_list',
             data: {
                 list: jQuery.parseJSON('{{.List}}'),
+                isDelete: '{{.isDelete}}'
             },
             methods:{
                 // 搜索
-                search:function(){
-                    location.href="/Customer/Manage?search="+this.searchText
+                changeIsDelete:function(){
+                    console.log("123");
+                    // location.href="/Customer/Manage?search="+this.searchText
                 },
-                // 编辑
+            },
+            watch:{
+                "isDelete":function(){
+                    console.log("123");
+                }
             }
         });
         layui.use(['form','layer'], function() {
