@@ -18,3 +18,7 @@
 .top_right{
     float: right
 }
+
+[v-cloak] {
+    display: none;
+}
