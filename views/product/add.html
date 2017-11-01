@@ -39,7 +39,7 @@
 <script>
     require(['jquery', 'vue', 'layui'], function($,Vue) {
         layui.use(['form','layer'], function() {
-            var form = layui.form();
+            var form = layui.form;
             var layer = layui.layer;
             form.on('submit(productAdd)', function(data) {
                 $.post("/Product/Add", data.field, function(result) {

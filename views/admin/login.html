@@ -39,7 +39,7 @@
 <script>
     require(['jquery', 'layui'], function($) {
         layui.use(['form','layer'], function() {
-            var form = layui.form();
+            var form = layui.form;
             var layer = layui.layer;
             //监听提交
             form.on('submit(login)', function(data) {
