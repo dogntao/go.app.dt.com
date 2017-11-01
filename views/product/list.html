@@ -1,8 +1,8 @@
 {{define "list"}} {{template "left" .}}
-<div id="product_list" class="layui-container" v-cloak>
+<div id="product_list" v-cloak>
     <div method="POST" class="layui-form layui-form-pane" action="">
         <div class="layui-row">
-            <div class="layui-col-xs6">
+            <div class="layui-col-xs4">
                 <div class="layui-form-item">
                     <label class="layui-form-label">产品状态</label>
                     <div class="layui-input-block">
@@ -14,7 +14,6 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-col-xs6"></div>
         </div>
 
         <table class="layui-table">
