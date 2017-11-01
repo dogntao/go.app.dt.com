@@ -148,3 +148,25 @@ func (p *ProductController) Update() {
 		fmt.Fprintln(rep, string(r))
 	}
 }
+
+// 上下线
+func (p *ProductController) changeStatus() {
+	id := paramMap["id"]
+	if req.Method == "POST" {
+		// 新增或保存
+		pro := make(map[string]interface{}, 0)
+		pro["is_delete"] = req.PostFormValue("name")
+		res, err := productModel.Update(pro, id)
+		// 返回json值
+		jr := &JsonResult{}
+		if err != nil {
+			jr.Code = 201
+			jr.Message = "产品上/下架失败"
+		} else {
+			jr.Code = 200
+			jr.Message = string(res)
+		}
+		r, _ := json.Marshal(jr)
+		fmt.Fprintln(rep, string(r))
+	}
+}

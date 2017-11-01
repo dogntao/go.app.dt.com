@@ -35,7 +35,7 @@
                     <td><input type="text" class="layui-input" name="count[${item.id}]" v-model="item.count"></td>
                     <td><input type="text" class="layui-input" name="purcase[${item.id}]" v-model="item.purcase"></td>
                     <td>
-                        <button class="layui-btn layui-btn-small " :class="item.is_delete==0?'layui-btn-danger':''">
+                        <button class="layui-btn layui-btn-small" @click="changeIsDelete(item.id,item.is_delete)" :class="item.is_delete==0?'layui-btn-danger':''">
                             ${item.is_delete==0?'下线':'上线'}
                         </button>
                     </td>
@@ -54,6 +54,15 @@
                 isDelete: '{{.isDelete}}'
             },
             methods: {
+                changeIsDelete:function (product_id,is_delete) {
+                    $.post("/Product/changeStatus?id="+ product_id, data.field, function (result) {
+                        if (result.Code == 200) {
+                            location.href = "/Customer/Manage";
+                        } else {
+                            layer.msg(result.Message)
+                        }
+                    }, "json")
+                }
             },
             watch: {
             }

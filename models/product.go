@@ -77,3 +77,11 @@ func (p *Product) UpdateProducts(upDatas, inPurcases []map[string]string) (affRo
 	}
 	return
 }
+
+// 更新
+func (p *Product) Update(upData map[string]interface{}, id string) (affRow int64, err error) {
+	conStr := "id=?"
+	bind := []string{id}
+	affRow, err = Dtsql.Update(productTable, upData, conStr, bind)
+	return
+}
