@@ -150,12 +150,12 @@ func (p *ProductController) Update() {
 }
 
 // 上下线
-func (p *ProductController) changeStatus() {
+func (p *ProductController) ChangeStatus() {
 	id := paramMap["id"]
 	if req.Method == "POST" {
 		// 新增或保存
 		pro := make(map[string]interface{}, 0)
-		pro["is_delete"] = req.PostFormValue("name")
+		pro["is_delete"] = req.PostFormValue("is_delete")
 		res, err := productModel.Update(pro, id)
 		// 返回json值
 		jr := &JsonResult{}
