@@ -53,22 +53,25 @@ func (o *OrderController) Add() {
 }
 
 // 订单列表
-func (o *OrderController) List() {
+func (o *OrderController) Manage() {
 	if req.Method == "GET" {
-		// 搜索参数
+		// 搜索数据
 		search := paramMap["search"]
-		// 分页
-		page := 1
+		// 处理分页
+		var page int64
+		page = 1
 		getPage, ok := paramMap["page"]
 		if ok {
-			page, _ = strconv.Atoi(getPage)
-			if page < 1 {
-				page = 1
-			}
+			page, _ = strconv.ParseInt(getPage, 10, 64)
 		}
-		total, list := orderModel.List(search, page, 10)
-		fmt.Println(total)
-		fmt.Println(list)
-	}
 
+		total, list := orderModel.Manage(search, page, 10)
+		listByte, _ := json.Marshal(list)
+		// 传递参数
+		assign["Total"] = total
+		assign["List"] = string(listByte)
+		assign["Search"] = search
+		assign["Page"] = page
+		o.DisplayAdmin("views/order/manage.html")
+	}
 }

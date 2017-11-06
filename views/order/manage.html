@@ -1,0 +1,83 @@
+{{define "manage"}} {{template "left" .}}
+<div id="order_manage" v-cloak>
+    <div style="width:400px; float:left; margin-bottom:10px">
+        <input type="text" name="title" required lay-verify="required" placeholder="请输入id/姓名/手机/地址" autocomplete="off" class="layui-input"
+            style="width:300px;float:left" v-model="searchText">
+        <button class="layui-btn" style="float:left" @click="search()">查找</button>
+    </div>
+    <table class="layui-table">
+        <!-- <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup> -->
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>订单名称</th>
+                <th>客户姓名</th>
+                <th>客户手机号</th>
+                <th>客户地址</th>
+                <th>客户折扣</th>
+                <th>产品总数</th>
+                <th>快递费</th>
+                <th>原价</th>
+                <th>实际价格</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in list">
+                <td>${item.id}</td>
+                <td>${item.order_name}</td>
+                <td>${item.cus_name}</td>
+                <td>${item.cus_mobile}</td>
+                <td>${item.cus_address}</td>
+                <td>${item.cus_discount}</td>
+                <td>${item.pro_count}</td>
+                <td>${item.exp_charge}</td>
+                <td>${item.ori_price}</td>
+                <td>${item.price}</td>
+                <td>
+                    <a class="layui-btn layui-btn-normal" href="/Order/Show?id=${item.id}">查看</a>
+                    <a class="layui-btn layui-btn-normal" href="/Order/Delete?id=${item.id}">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="page"></div>
+</div>
+<script>
+    require(['jquery', 'vue'], function ($, Vue) {
+        layui.use(['laypage'], function () {
+            var laypage = layui.laypage
+            // v2版本分页
+            laypage.render({
+                elem: 'page',
+                count: '{{.Total}}',
+                groups: 8, //连续显示分页数
+                curr: '{{.Page}}',
+                jump: function (obj, first) {
+                    if (first != true) {
+                        var search = '{{.SearchText}}';
+                        location.href = "/Order/Manage?search=" + search + "&page=" +obj.curr;
+                    }
+                }
+            });
+        });
+        new Vue({
+            el: '#order_manage',
+            data: {
+                list: jQuery.parseJSON('{{.List}}'),
+                searchText: '{{.Search}}',
+            },
+            methods: {
+                // 搜索
+                search: function () {
+                    location.href = "/Order/Manage?search=" + this.searchText
+                },
+            }
+        })
+    })
+</script>
+{{template "footer"}} {{end}}

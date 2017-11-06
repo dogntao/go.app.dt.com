@@ -94,32 +94,37 @@ func (o *Order) Add(cusId, expCharge string, productCount map[string]interface{}
 	return
 }
 
-// 订单列表
-func (o *Order) List(seaStr string, pageIndex, pageSize int) (total int, list []map[string]string) {
+// 订单列表(返回总数和列表)
+func (o *Order) Manage(seaStr string, pageIndex, pageSize int64) (total int, list []map[string]string) {
 	con := ""
 	bind := []string{}
 	if seaStr != "" {
-		con = "cus_id=? OR cus_mobile LIKE ? OR cus_name LIKE ?"
-		bind = append(bind, seaStr)
-		bind = append(bind, "%"+seaStr+"%")
-		bind = append(bind, "%"+seaStr+"%")
+		con = "(id like ? OR order_name like ? OR cus_id like ? OR cus_mobile like ? OR cus_name like ?)"
+		for i := 0; i < 5; i++ {
+			seaStr = "%" + seaStr + "%"
+			bind = append(bind, seaStr)
+		}
+	} else {
+		// bind = append(bind, "")
 	}
 	// 查询总数
 	var orderCount OrderCount
 	err := Dtsql.Query(orderCount, orderTable, con, bind)
 	err = Dtsql.FetchRow()
-	total, err = strconv.Atoi(Dtsql.RetMap["queryCount"])
-	// 查询列表(分页)
+	total, _ = strconv.Atoi(Dtsql.RetMap["queryCount"])
+
+	// 查询列表
 	var orderInfo OrderInfo
 	if con == "" {
 		con = "1=1"
 	}
 	con = con + " LIMIT ?,?"
-	bind = append(bind, strconv.Itoa((pageIndex-1)*pageSize))
-	bind = append(bind, strconv.Itoa(pageSize))
+	bind = append(bind, fmt.Sprintf("%d", (pageIndex-1)*pageSize))
+	bind = append(bind, fmt.Sprintf("%d", pageSize))
 	err = Dtsql.Query(orderInfo, orderTable, con, bind)
 	err = Dtsql.FetchAll()
-	checkErr(err)
 	list = Dtsql.RetRows
+
+	checkErr(err)
 	return
 }
