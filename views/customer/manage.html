@@ -1,14 +1,8 @@
 {{define "manage"}} {{template "left" .}}
 <div id="cus_manage" v-cloak>
     <div style="width:400px; float:left; margin-bottom:10px">
-        <input type="text" name="title" 
-            required lay-verify="required" 
-            placeholder="请输入id/姓名/手机/地址" 
-            autocomplete="off" 
-            class="layui-input"
-            style="width:300px;float:left"
-            v-model="searchText"
-        > 
+        <input type="text" name="title" required lay-verify="required" placeholder="请输入id/姓名/手机/地址" autocomplete="off" class="layui-input"
+            style="width:300px;float:left" v-model="searchText">
         <button class="layui-btn" style="float:left" @click="search()">查找</button>
     </div>
     <table class="layui-table">
@@ -26,40 +20,54 @@
                 <th>余额</th>
                 <th>折扣</th>
                 <th>操作</th>
-            </tr> 
+            </tr>
         </thead>
         <tbody>
-            <tr v-for="item in list"> 
-                <td>${item.id}</td> 
-                <td>${item.name}</td> 
-                <td>${item.mobile}</td> 
-                <td>${item.address}</td> 
-                <td>${item.balance}</td> 
-                <td>${item.discount}</td> 
+            <tr v-for="item in list">
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.mobile}</td>
+                <td>${item.address}</td>
+                <td>${item.balance}</td>
+                <td>${item.discount}</td>
                 <td>
                     <a class="layui-btn layui-btn-normal" href="/Customer/Add?id=${item.id}">编辑</a>
-                </td> 
-             </tr>  
+                </td>
+            </tr>
         </tbody>
     </table>
     <div id="page"></div>
 </div>
 <script>
-    require(['jquery', 'vue'], function($,Vue) {
+    require(['jquery', 'vue'], function ($, Vue) {
         layui.use(['laypage'], function () {
             var laypage = layui.laypage
-            laypage({
-                cont: 'page',
-                pages: '{{.Total}}', //总页数
-                skip:true,
+            // v1版本分页
+            // laypage({
+            //     cont: 'page',
+            //     pages: '{{.Total}}', //总页数
+            //     skip:true,
+            //     groups: 8, //连续显示分页数
+            //     curr:'{{.Page}}',
+            //     jump:function(obj,first){
+            //         // console.log(obj);
+            //         // console.log(first);
+            //         if(first != true){
+            //             var search = '{{.SearchText}}';
+            //             location.href="/Customer/Manage?search="+search+"&page="+obj.curr;
+            //         }
+            //     }
+            // });
+            // v2版本分页
+            laypage.render({
+                elem: 'page',
+                count: '{{.Total}}',
                 groups: 8, //连续显示分页数
-                curr:'{{.Page}}',
-                jump:function(obj,first){
-                    // console.log(obj);
-                    // console.log(first);
-                    if(first != true){
+                curr: '{{.Page}}',
+                jump: function (obj, first) {
+                    if (first != true) {
                         var search = '{{.SearchText}}';
-                        location.href="/Customer/Manage?search="+search+"&page="+obj.curr;
+                        location.href = "/Customer/Manage?search=" + search + "&page=" +obj.curr;
                     }
                 }
             });
@@ -67,14 +75,13 @@
         new Vue({
             el: '#cus_manage',
             data: {
-                total: '{{.Total}}',
                 list: jQuery.parseJSON('{{.List}}'),
                 searchText: '{{.Search}}',
             },
-            methods:{
+            methods: {
                 // 搜索
-                search:function(){
-                    location.href="/Customer/Manage?search="+this.searchText
+                search: function () {
+                    location.href = "/Customer/Manage?search=" + this.searchText
                 },
                 // 编辑
             }

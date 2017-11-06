@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"strconv"
 
 	"go.app.dt.com/models"
@@ -73,7 +72,8 @@ func (c *CustomerController) Manage() {
 		total, list := customerModel.Manage(search, page, 10)
 		listByte, _ := json.Marshal(list)
 		// 传递参数
-		assign["Total"] = math.Ceil(float64(total) / 10)
+		// assign["Total"] = math.Ceil(float64(total) / 10)
+		assign["Total"] = total
 		assign["List"] = string(listByte)
 		assign["Search"] = search
 		assign["Page"] = page
