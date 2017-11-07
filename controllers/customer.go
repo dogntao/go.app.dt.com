@@ -135,16 +135,16 @@ func (c *CustomerController) Add() {
 }
 
 // 顾客详情
-func (c *CustomerController) Info() {
-	// 根据id获取详情
-	id := paramMap["id"]
-	customerInfoMap := make(map[string]string, 0)
-	customerInfoMap, err := customerModel.Info(id)
-	jsonResult := &CustomerInfoJson{Code: 0}
-	if err == nil {
-		jsonResult.Code = 200
-		jsonResult.Result = customerInfoMap
-	}
-	customerInfoByte, _ := json.Marshal(jsonResult)
-	fmt.Fprintln(rep, string(customerInfoByte))
-}
+// func (c *CustomerController) Info() {
+// 	// 根据id获取详情
+// 	id := paramMap["id"]
+// 	customerInfoMap := make(map[string]string, 0)
+// 	customerInfoMap, err := customerModel.Info(id)
+// 	jsonResult := &CustomerInfoJson{Code: 0}
+// 	if err == nil {
+// 		jsonResult.Code = 200
+// 		jsonResult.Result = customerInfoMap
+// 	}
+// 	customerInfoByte, _ := json.Marshal(jsonResult)
+// 	fmt.Fprintln(rep, string(customerInfoByte))
+// }

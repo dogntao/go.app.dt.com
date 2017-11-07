@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"go.app.dt.com/models"
-	"go.app.dt.com/utils"
 )
 
 type ProductController struct {
@@ -33,10 +32,6 @@ func (p *ProductController) Index() {
 
 // 产品
 func (p *ProductController) Add() {
-	upProductInfo := &UpProductInfo{"123", "test", "99", "2", "10"}
-	strMap := utils.StructToMap(upProductInfo)
-	fmt.Println(strMap)
-
 	if req.Method == "GET" {
 		p.DisplayAdmin("views/product/add.html")
 	} else {

@@ -75,3 +75,16 @@ func (o *OrderController) Manage() {
 		o.DisplayAdmin("views/order/manage.html")
 	}
 }
+
+// 订单详情
+func (o *OrderController) Info() {
+	// 根据id获取详情
+	id := paramMap["id"]
+	orderInfoMap := make(map[string]string, 0)
+	orderInfoMap, _ = orderModel.Info(id)
+	// orderInfoByte, _ := json.Marshal(orderInfoMap)
+	// assign["Orderinfo"] = string(orderInfoByte)
+	assign["Orderinfo"] = orderInfoMap
+	fmt.Println(assign)
+	o.DisplayAdmin("views/order/info.html")
+}

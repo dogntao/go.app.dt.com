@@ -128,3 +128,14 @@ func (o *Order) Manage(seaStr string, pageIndex, pageSize int64) (total int, lis
 	checkErr(err)
 	return
 }
+
+// 查询详情
+func (o *Order) Info(id string) (info map[string]string, err error) {
+	var orderInfo OrderInfo
+	con := "id=?"
+	bind := []string{id}
+	err = Dtsql.Query(orderInfo, orderTable, con, bind)
+	err = Dtsql.FetchRow()
+	info = Dtsql.RetMap
+	return
+}
