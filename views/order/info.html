@@ -6,27 +6,27 @@
         任阳持久美妆
     </title>
     <meta charset="utf-8">
+    <script src="/js/components/require.js"></script>
+    <script src="/js/config.js"></script>
     <link rel="stylesheet" href="/css/layout_admin.css">
 </head>
-<div class="mar_bot" id="customer_info">
+<div class="mar_bot" id="order_info">
     <div class="print_title">任阳持久美妆销货单</div>
-    {{.Orderinfo.order_name}}
     <div class="user">
         <table class="table">
             <tr>
                 <td width="280">地址:
-                    <span>{{.Orderinfo.cus_address}}</span>
+                    <span>${orderInfo.cus_address}</span>
                 </td>
                 <td width="180">电话:
-                    <span>{{.Orderinfo.cus_mobile}}</span>
+                    <span>${orderInfo.cus_mobile}</span>
                 </td>
                 <td width="180">日期:
-                    <span>{{date('Y-m-d',.Orderinfo.create_date)}}</span>
                 </td>
             </tr>
             <tr>
                 <td class="bor_bot_none">姓名:
-                    <span>{{.Orderinfo.cus_name}}</span>
+                    <span>${orderInfo.cus_name}</span>
                 </td>
                 <td class="bor_bot_none">余额:
                     <span>
@@ -44,46 +44,30 @@
 
     <div id="order_info" class="mar_bot">
         <table>
-            <thead>
-                <tr>
-                    {loop $add_info_thead $key $val}
-                    <td width={$val[ 'width']}>{$val['name']}</td>
-                    {/loop}
-                    <td width=90>备注</td>
-                </tr>
-            </thead>
             <tbody id="product_list">
-                <?php if(isset($order_desc)) { $i=1 ;?>
-                <?php foreach(json_decode($order_desc) as $key => $val) {;?>
-                <tr>
-                    <td>{$i}</td>
-                    <td>{$val->name}</td>
-                    <td>{$val->price}</td>
-                    <td>{$val->count}</td>
-                    <td>{$val->money}</td>
+                <tr v-for="item in orderDesc">
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.price}</td>
+                    <td>${item.count}</td>
+                    <td>${item.money}</td>
                     <td></td>
                 </tr>
-                <?php $i++; } ;?>
-                <tr>
-                    <td>{$i}</td>
-                    <td>快递费</td>
-                    <td>{$exp_charge}</td>
-                    <td>1</td>
-                    <td>{$exp_charge}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>合计</td>
-                    <td></td>
-                    <td></td>
-                    <td>{$pro_count+1}</td>
-                    <td>{$price+$exp_charge}</td>
-                    <td></td>
-                </tr>
-                <?php };?>
             </tbody>
         </table>
     </div>
 
 </div>
+<script>
+    require(['jquery', 'vue'], function ($, Vue) {
+        var addOrderVue = new Vue({
+            el: '#order_info',
+            data: {
+                orderInfo: jQuery.parseJSON('{{.OrderInfo}}'),
+                orderDesc: jQuery.parseJSON('{{.OrderDesc}}'),
+            },
+        });
+    })
+
+</script>
 {{template "footer"}} {{end}}
