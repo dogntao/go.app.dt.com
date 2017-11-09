@@ -9,41 +9,59 @@
     <script src="/js/components/require.js"></script>
     <script src="/js/config.js"></script>
     <link rel="stylesheet" href="/css/layout_admin.css">
+    <style>
+        body{margin: 0px}
+        table{border-collapse: collapse; text-align: center}
+        .table tr td{ padding: 0px 10px}
+        table td{border: 1px solid #000; height: 22px; line-height: 22px; font-size: 12px; padding: 0px; margin: 0px} 
+    </style>
 </head>
 <div class="mar_bot" id="order_info">
     <div class="print_title">任阳持久美妆销货单</div>
     <div class="user">
-        <table class="table">
-            <tr>
-                <td width="280">地址:
-                    <span>${orderInfo.cus_address}</span>
-                </td>
-                <td width="180">电话:
-                    <span>${orderInfo.cus_mobile}</span>
-                </td>
-                <td width="180">日期:
-                </td>
-            </tr>
-            <tr>
-                <td class="bor_bot_none">姓名:
-                    <span>${orderInfo.cus_name}</span>
-                </td>
-                <td class="bor_bot_none">余额:
-                    <span>
-                        <!-- <?php echo $customer_info['balance']>0?$customer_info['balance']:0 ;?> -->
-                    </span>
-                </td>
-                <td class="bor_bot_none">会员折扣:
-                    <span>
-                        <!-- <?php echo $cus_discount==100?'无':$cus_discount.'折' ;?> -->
-                    </span>
-                </td>
-            </tr>
+        <table style="text-align:left" class="table">
+            <tbody>
+                <tr>
+                    <td width="280">地址:
+                        <span>${orderInfo.cus_address}</span>
+                    </td>
+                    <td width="180">电话:
+                        <span>${orderInfo.cus_mobile}</span>
+                    </td>
+                    <td width="180">日期:
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bor_bot_none">姓名:
+                        <span>${orderInfo.cus_name}</span>
+                    </td>
+                    <td class="bor_bot_none">余额:
+                        <span>
+                            <!-- <?php echo $customer_info['balance']>0?$customer_info['balance']:0 ;?> -->
+                        </span>
+                    </td>
+                    <td class="bor_bot_none">会员折扣:
+                        <span>
+                            ${orderInfo.cus_discount==100?'无':orderInfo.cus_discount+'折'}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
     <div id="order_info" class="mar_bot">
         <table>
+            <thead>
+                <tr>
+                    <td width="50">序号</td>
+                    <td width="200">产品</td>
+                    <td width="100">会员价</td>
+                    <td width="97">数量</td>
+                    <td width="160">金额</td>
+                    <td width="90">备注</td>
+                </tr>
+            </thead>
             <tbody id="product_list">
                 <tr v-for="item in orderDesc">
                     <td>${item.id}</td>
@@ -52,6 +70,10 @@
                     <td>${item.count}</td>
                     <td>${item.money}</td>
                     <td></td>
+                </tr>
+                <!-- 合计 -->
+                <tr>
+                    
                 </tr>
             </tbody>
         </table>
@@ -68,6 +90,5 @@
             },
         });
     })
-
 </script>
 {{template "footer"}} {{end}}

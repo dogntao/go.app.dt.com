@@ -82,14 +82,6 @@ func (o *OrderController) Info() {
 	id := paramMap["id"]
 	orderInfoMap := make(map[string]string, 0)
 	orderInfoMap, _ = orderModel.Info(id)
-	// 处理订单详情
-	// if orderInfoMap["order_desc"] != "" {
-	// 	orderDesc := orderInfoMap["order_desc"]
-	// 	orderDescMap := make([]map[string]interface{}, 0)
-	// 	json.Unmarshal([]byte(orderDesc), &orderDescMap)
-	// 	orderInfoMap["order_desc_map"] = orderDescMap
-	// 	fmt.Println(orderDescMap)
-	// }
 	orderInfoByte, _ := json.Marshal(orderInfoMap)
 	assign["OrderInfo"] = string(orderInfoByte)
 	assign["OrderDesc"] = orderInfoMap["order_desc"]
