@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"go.app.dt.com/models"
 )
@@ -82,6 +83,9 @@ func (o *OrderController) Info() {
 	id := paramMap["id"]
 	orderInfoMap := make(map[string]string, 0)
 	orderInfoMap, _ = orderModel.Info(id)
+	timeInt, _ := strconv.ParseInt(orderInfoMap["create_date"], 10, 64)
+	tm := time.Unix(timeInt, 0)
+	orderInfoMap["create_date_formate"] = tm.Format("2006-01-02 15:04")
 	orderInfoByte, _ := json.Marshal(orderInfoMap)
 	assign["OrderInfo"] = string(orderInfoByte)
 	assign["OrderDesc"] = orderInfoMap["order_desc"]
