@@ -29,6 +29,7 @@
                         <span>${orderInfo.cus_mobile}</span>
                     </td>
                     <td width="180">日期:
+                        <span>${orderInfo.create_date_formate}</span>
                     </td>
                 </tr>
                 <tr>
@@ -73,7 +74,12 @@
                 </tr>
                 <!-- 合计 -->
                 <tr>
-                    
+                    <td>合计</td>
+                    <td></td>
+                    <td></td>
+                    <td>${orderInfo.pro_count}</td>
+                    <td>${orderInfo.price}</td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
