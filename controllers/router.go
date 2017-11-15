@@ -48,7 +48,7 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 				act = value
 			}
 		}
-		// 默认跳转到ndex方法
+		// 默认跳转到index方法
 		if act == "" {
 			act = "Index"
 		}
