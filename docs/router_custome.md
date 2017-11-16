@@ -57,22 +57,40 @@ func IndexRouter(w http.ResponseWriter, r *http.Request) {
 	}
 }
 ```
-#### 1.静态文件
-> 利用`http.Handle`将静态文件夹转发到项目对应路径 
+#### 1.获取uri用于解析controller、action、参数
+> 利用`req.RequestURI`获取uri地址
 ``` 
-http.Handle("/js/", http.FileServer(http.Dir("public")))
+返回:/Product/List?is_delete=1
 ```
-
-&emsp;`http.Dir`返回文件夹相对路径地址
-
-&emsp;`http.FileServer`获取到项目根目录handler
-
-&emsp;这段话相当于把`/js/`路径转发到了项目根目录`/public/js/`下
-
-#### 2.动态路由
-> 利用`http.HandleFunc`将根目录转发到自定义路由方法 
+#### 2.解析区分controller、action/参数
+> 利用`strings.Split()`切分uri地址
+> `?`切分uri地址
 ``` 
-http.HandleFunc("/", con.IndexRouter)
+返回[/Product/List is_delete=1]数组
+第0个是contreoller+action
+第1个是参数
 ```
-
-&emsp;`con.IndexRouter`自定义路由方法
+#### 3.解析controller、action
+> 利用`/`切分数组第0个
+> 利用`strings.Title()`,将首字母大写，兼容大小写输入
+``` 
+返回[ Product List]数组
+第1个是contreoller
+第2个是action
+```
+#### 4.解析参数
+> 利用`req.URL.Query()`解析参数
+``` 
+返回map[is_delete:[1]]
+key是参数名称
+value是参数值数组
+```
+#### 5.利用反射调用对应controller对应方法
+> 利用`conVal := reflect.ValueOf(funs[con])`反射
+> 利用`method := conVal.MethodByName(act)`查找方法
+> 利用`method.Call([]reflect.Value{})`调用方法
+``` 
+返回map[is_delete:[1]]
+key是参数名称
+value是参数值
+```
