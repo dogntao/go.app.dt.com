@@ -17,4 +17,7 @@ var customerModel = &models.Customer{}
 customerModel.Info(id)
 ```
 
-#### 
+#### 3.view
+```
+> 1.go 通过`template.ParseFiles`把所有嵌套模板解析到模板里面，模板之间相互独立，并行存在，内部存储的是map关系(key是模板名称,value是模板内容),
+```
