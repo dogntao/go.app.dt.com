@@ -1,8 +1,8 @@
 ### mvc
-#### 1.controller
+#### 一.controller
 > 通过自定义路由，解析到对一个controller里面对应方法
 
-#### 2.model
+#### 二.model
 > 1.通过`import`方法引入model目录
 
 > 2.初始化model
@@ -17,7 +17,30 @@ var customerModel = &models.Customer{}
 customerModel.Info(id)
 ```
 
-#### 3.view
+#### 三.view
+##### &emsp;1.加载模板
+> a. go 通过`template.ParseFiles`把所有嵌套模板解析到模板里面，模板之间相互独立，并行存在，内部存储的是map关系(key是模板名称,value是模板内容)
+
+> b. 然后通过`ExecuteTemplate`执行相应子模板内容
 ```
-> 1.go 通过`template.ParseFiles`把所有嵌套模板解析到模板里面，模板之间相互独立，并行存在，内部存储的是map关系(key是模板名称,value是模板内容),
+func (b *BaseController) DisplayAdmin(page string) {
+	tem, _ := template.ParseFiles(page, "views/layouts/admin/left.html", "views/layouts/admin/header.html", "views/layouts/admin/footer.html")
+	pageName := getFileName(page)
+	assign["Con"] = con
+	assign["Act"] = act
+	tem.ExecuteTemplate(rep, pageName, assign)
+}
 ```
+##### &emsp;2.模板定义
+> 在实际开发过程中经常要加载header，footer等
+
+> 用define定义模板:{{define "header"}},用end结束定义:{{end}}
+##### &emsp;3.模板嵌套模板
+> 1.引入header {{define "add"}} {{template "header" .}}
+
+> 2.引入footer {{template "footer"}} {{end}}
+
+> `注:{{template "header" .}} .用于多页面参数打通`
+
+##### &emsp;3.模板显示数据
+
