@@ -43,4 +43,16 @@ func (b *BaseController) DisplayAdmin(page string) {
 > `注:{{template "header" .}} .用于多页面参数打通`
 
 ##### &emsp;3.模板显示数据
+> 1.controller传递参数 
+
+```
+ExeTemplate(req,pageName,assign),第三个参数`assign`即为往模板页面传递的数据
+```
+
+> 2.view 显示参数
+
+> go通过`{{}}`来显示传递过来的数据，`{{.}}`表示当前对象,字段必须`首字母大写`
+```
+{{.FileName}}
+```
 
