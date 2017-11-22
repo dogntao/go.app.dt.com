@@ -89,6 +89,7 @@ func (c *CustomerController) Add() {
 	if ok {
 		customerInfoMap, _ = customerModel.Info(id)
 	}
+	// 传递json值
 	customerInfoByte, _ := json.Marshal(customerInfoMap)
 	customerInfo := string(customerInfoByte)
 

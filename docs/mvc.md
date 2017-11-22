@@ -46,7 +46,7 @@ func (b *BaseController) DisplayAdmin(page string) {
 > 1.controller传递参数 
 
 ```
-ExeTemplate(req,pageName,assign),第三个参数`assign`即为往模板页面传递的数据
+ExecuteTemplate(req,pageName,assign),第三个参数`assign`即为往模板页面传递的数据
 ```
 
 > 2.view 显示参数
