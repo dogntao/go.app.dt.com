@@ -45,6 +45,7 @@ func (b *BaseController) DisplayAdmin(page string) {
 ##### &emsp;3.模板显示数据
 > 1.controller传递参数 
 
+> var assign = make(map[string]interface{})
 ```
 ExecuteTemplate(req,pageName,assign),第三个参数`assign`即为往模板页面传递的数据
 ```
