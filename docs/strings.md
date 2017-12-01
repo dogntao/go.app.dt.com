@@ -16,7 +16,6 @@ false
 true
 true
 ```
-
 2.字符串s是否包含chars中任何一个字符
 > func `ContainsAny`(s, chars string) bool
 
@@ -36,8 +35,9 @@ true
 false
 false
 ```
+
 #### 字符串长度Count;
-3.计算字符串s中substr长度
+1.计算字符串s中substr长度
 > func `Count`(s, substr string) int
 
 > `如果substr是空字符串，返回s长度+1`
@@ -52,8 +52,9 @@ Output:
 3
 5
 ```
+
 #### 空格拆分Fields;
-4.用空格拆分字符串s
+1.用空格拆分字符串s
 > func `Fields`(s string) []string 
 
 Code:
@@ -65,7 +66,7 @@ Output:
 [this is test]
 ```
 #### 前后缀
-5.字符串s，是否以prefix作为前缀
+1.字符串s，是否以prefix作为前缀
 > func `HasPrefix`(s, prefix string) bool
 
 Code:
@@ -82,8 +83,7 @@ false
 false
 true
 ```
-
-6.字符串s，是否以suffix作为后缀
+2.字符串s，是否以suffix作为后缀
 > func `HasSuffix`(s, suffix string) bool
 
 Code:
@@ -100,8 +100,9 @@ false
 false
 true
 ```
+
 #### 出现位置
-7.字符串subStr,在s中第一次出现的位置
+1.字符串subStr,在s中第一次出现的位置
 > func `Index`(s, subStr string) int
 
 > 如果不包含返回-1
@@ -117,7 +118,7 @@ Output:
 -1
 ```
 
-8.字符串subStr,在s中最后一次出现的位置
+2.字符串subStr,在s中最后一次出现的位置
 > func `LastIndex`(s, subStr string) int
 
 > 如果不包含返回-1
@@ -134,7 +135,7 @@ Output:
 ```
 
 #### 拼接/拆分
-9.把数组a,用sep拼接成字符串
+1.把数组a,用sep拼接成字符串
 > func `Join`(a []sting, sep string) string
 
 Code:
@@ -147,7 +148,7 @@ Output:
 this,is,test
 ```
 
-10.把字符串s,用sep拆分成数组
+2.把字符串s,用sep拆分成数组
 > func `Split`(s, sep string) []string
 
 Code:
@@ -159,8 +160,20 @@ Output:
 [this is test]
 ```
 
+3.Repeat: 将count个s连接成一个新的字符串
+> func `Repeat`(s string, count int) string 
+
+Code:
+```
+fmt.Println(strings.Repeat("hello", 3))
+```
+Output:
+```
+hellohellohello
+```
+
 #### 大小写转换
-10.首字母大写
+1.首字母大写
 > func `Title`(s string) string
 Code:
 ```
@@ -170,8 +183,8 @@ Output:
 ```
 This Is Test
 ```
-11.所有字母大写
-> func `Totitle`(s string) string
+2.所有字母大写
+> 2.1 func `Totitle`(s string) string
 
 Code:
 ```
@@ -181,7 +194,7 @@ Output:
 ```
 THIS IS TEST
 ```
-> func `ToUpper`(s string) string
+> 2.2 func `ToUpper`(s string) string
 
 Code:
 ```
@@ -191,8 +204,7 @@ Output:
 ```
 THIS IS TEST
 ```
-
-12.所有字母小写
+3.所有字母小写
 > func `ToLower`(s string) string
 Code:
 ```
@@ -235,17 +247,17 @@ Output:
 ```
 thit it tett field
 ```
-
-Repeat: 将count个s连接成一个新的字符串
-> func `Repeat`(s string, count int) string 
-
+3.Replacer:根据替换列表进行替换
 Code:
 ```
-fmt.Println(strings.Repeat("hello", 3))
+s := "hello world,hello1 world1,hello2 world2"
+r := strings.NewReplacer("hello", "你好", "world", "世界")
+rst := r.Replace(s)
+fmt.Println(rst)
 ```
 Output:
 ```
-hellohellohello
+你好 世界,你好1 世界1,你好2 世界2
 ```
 
 #### 过滤
@@ -319,6 +331,23 @@ Output:
 hello worldtest
 ```
 
+#### 读取字符串
+Code:
+```
+s := "123abc"
+reader := strings.NewReader(s)
+// offset:偏移量，负数表示反向移动
+// whence:从哪里开始移动，0:起始位置;1:当前位置;2:结尾位置
+reader.Seek(1, 0)
+reader.Seek(1, 1)
+rLen := reader.Len()
+fmt.Println(rLen)
+```
+Output:
+```
+4
+```
+
 #### 截取字符串
 > 将字符串转换成rune数组，然后获取rune数据，然后转换成字符串
 Code:
@@ -330,4 +359,41 @@ fmt.Println(string(rs[3:]))
 Output:
 ```
 est中国
+```
+
+#### 字符串长度
+>1.`strings.Count`,算出包含空的，减去1
+
+Code:
+```
+s := "董涛123abc"
+sLen := strings.Count(s, "")
+fmt.Println(sLen - 1)
+```
+Output:
+```
+8
+```
+
+>2.利用[]rune,后调用len
+
+Code:
+```
+s := "董涛123abc"
+fmt.Println(len([]rune(s)))
+```
+Output:
+```
+8
+```
+>3.利用utf8.RuneCountInString,直接算出
+
+Code
+```
+s := "董涛123abc"
+fmt.Println(utf8.RuneCountInString(s))
+```
+Output:
+```
+8
 ```
