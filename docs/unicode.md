@@ -29,10 +29,16 @@ for _, v := range testStr {
         fmt.Println("\t is number rune")
     }
     // 是否某种类型 例: 汉字
-    rangeTable := []*unicode.RangeTable{unicode.Han}
-    if unicode.IsOneOf(rangeTable, v) {
-        fmt.Println("\t is 汉字 rune")
-    }
+		rangeTable := []*unicode.RangeTable{unicode.Han}
+		if unicode.IsOneOf(rangeTable, v) {
+			fmt.Println("\t is 汉字(IsOneOf) rune")
+		}
+		if unicode.Is(unicode.Han, v) {
+			fmt.Println("\t is 汉字(Is) rune")
+		}
+		if unicode.In(v, unicode.Han, unicode.Hangul) {
+			fmt.Println("\t is 汉字(In) rune")
+		}
     // 是否可打印字符 例: \t不是
     if unicode.IsPrint(v) {
         fmt.Println("\t is print rune")
